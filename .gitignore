@@ -1,0 +1,42 @@
+# Node.js (Backend)
+node_modules/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+package-lock.json
+*.log
+*.pid
+*.seed
+*.tgz
+.env
+
+# React Native (Frontend)
+node_modules/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+*.log
+*.pid
+*.seed
+*.tgz
+.env
+*.iml
+.idea/
+
+# Build and OS-specific files
+/dist/
+/build/
+/coverage/
+/*.env
+.DS_Store
+Thumbs.db
+
+# JetBrains IDEs (like WebStorm or IntelliJ IDEA)
+.idea/
+
+# Visual Studio Code
+.vscode/
+
+# Expo (if you're using Expo in React Native)
+.expo/
+.expo-shared/

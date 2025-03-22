@@ -2,15 +2,17 @@ import { View, Text, TextInput, TouchableOpacity, Image } from "react-native";
 import React, { useState } from "react";
 import { Eye, EyeOff, Link } from "lucide-react-native";
 import { images } from "../../constants/images";
+import { useRouter } from "expo-router";
 
 const SignInScreen = () => {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   return (
-    <View className="items-center justify-center bg-white h-full">
+    <View className="items-center justify-center bg-white  h-full">
       <Text className="font-bold text-5xl">Sign in</Text>
 
       <View className="mt-10 w-full px-4 gap-y-4">
@@ -67,7 +69,7 @@ const SignInScreen = () => {
         <View className="justify-center items-center mt-2">
           <Text>
             Forgot your{" "}
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => router.push("/resetpassword")}>
               <Text className="text-blue-500">password?</Text>
             </TouchableOpacity>
           </Text>
@@ -76,7 +78,7 @@ const SignInScreen = () => {
         <View className="justify-center items-center mt-2">
           <Text>
             Dont have an account yet?{" "}
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => router.push("/signup")}>
               <Text className="text-blue-500">Sign Up</Text>
             </TouchableOpacity>
           </Text>

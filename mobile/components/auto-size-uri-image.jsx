@@ -40,7 +40,6 @@ const AutoSizedImage = ({ uri }) => {
         width: imageSize.width,
         height: imageSize.height,
         resizeMode: "cover",
-        borderRadius: 8,
       }}
     />
   );

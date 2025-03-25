@@ -16,8 +16,8 @@ const _layout = () => {
           alignItems: "center",
         },
         tabBarStyle: {
-          paddingTop: 3,
-          height: 43,
+          paddingTop: 8,
+          height: 50,
           backgroundColor: "white",
         },
       }}

@@ -1,0 +1,316 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Account {
+  id                String  @id
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  User              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Blog {
+  id          String   @id @default(cuid())
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  image       Json?
+  video       Json?
+  userStatus  String?
+
+  author   User   @relation(fields: [authorId], references: [id])
+  authorId String
+
+  sharedPostId String?
+
+  comments    Comment[]
+  RecentPosts RecentPosts[]
+  community   Community?    @relation(fields: [communityId], references: [id], onDelete: Cascade)
+  communityId String?
+  votes       Vote[]
+  History     History[]
+
+  @@index([authorId])
+  @@index([communityId])
+}
+
+model Comment {
+  id                 String            @id
+  text               String?
+  createdAt          DateTime          @default(now())
+  authorId           String
+  postId             String
+  index              String?
+  replyToId          String?
+  commentId          String?
+  commentImageUrl    String?
+  shortsvId          String?
+  userPostedImagesId String?
+  User               User              @relation(fields: [authorId], references: [id])
+  Blog               Blog              @relation(fields: [postId], references: [id])
+  Comment            Comment?          @relation("CommentToComment", fields: [replyToId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  other_Comment      Comment[]         @relation("CommentToComment")
+  Shortsv            Shortsv?          @relation(fields: [shortsvId], references: [id])
+  UserPostedImages   UserPostedImages? @relation(fields: [userPostedImagesId], references: [id])
+  CommentVote        CommentVote[]
+}
+
+model CommentVote {
+  userId    String
+  commentId String
+  type      VoteType
+  Comment   Comment  @relation(fields: [commentId], references: [id])
+  User      User     @relation(fields: [userId], references: [id])
+
+  @@id([userId, commentId])
+}
+
+model Community {
+  id           String         @id
+  name         String         @unique
+  description  String?
+  banner       String?
+  icon         String?
+  topics       Json
+  accessType   String
+  visibility   String?
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime
+  creatorId    String?
+  Blog         Blog[]
+  User         User?          @relation(fields: [creatorId], references: [id])
+  Shortsv      Shortsv[]
+  Subscription Subscription[]
+
+  @@index([name])
+}
+
+model Conversation {
+  id                                String    @id
+  userOneId                         String
+  userTwoId                         String
+  createdAt                         DateTime  @default(now())
+  User_Conversation_userOneIdToUser User      @relation("Conversation_userOneIdToUser", fields: [userOneId], references: [id], onDelete: Cascade)
+  User_Conversation_userTwoIdToUser User      @relation("Conversation_userTwoIdToUser", fields: [userTwoId], references: [id], onDelete: Cascade)
+  Message                           Message[]
+
+  @@unique([userOneId, userTwoId])
+  @@index([userOneId])
+  @@index([userTwoId])
+}
+
+model Friend {
+  id                                String   @id
+  userId                            String
+  requesterUserId                   String
+  isRequestAccepted                 String   @default("false")
+  createdAt                         DateTime @default(now())
+  updatedAt                         DateTime @default(now())
+  User_Friend_requesterUserIdToUser User     @relation("Friend_requesterUserIdToUser", fields: [requesterUserId], references: [id])
+  User_Friend_userIdToUser          User     @relation("Friend_userIdToUser", fields: [userId], references: [id])
+}
+
+model FriendRequestNotification {
+  id              String   @id
+  userId          String
+  requesterUserId String
+  createdAt       DateTime @default(now())
+
+  @@index([userId, requesterUserId], map: "unique_user_requester")
+}
+
+model History {
+  createdAt DateTime @default(now())
+  updatedAt DateTime
+  postId    String
+  userId    String
+  Blog      Blog     @relation(fields: [postId], references: [id])
+  User      User     @relation(fields: [userId], references: [id])
+
+  @@id([postId, userId])
+}
+
+model Message {
+  id             String       @id
+  content        String
+  userId         String
+  conversationId String
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime
+  deleted        Boolean      @default(false)
+  Conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  User           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([conversationId])
+  @@index([userId])
+}
+
+model Notification {
+  id           String   @id
+  userId       String
+  text         String
+  fromUserId   String
+  isMarkAsRead String   @default("false")
+  createdAt    DateTime @default(now())
+  User         User     @relation(fields: [fromUserId], references: [id])
+}
+
+model RecentPosts {
+  id        String   @id
+  postId    String
+  createdAt DateTime @default(now())
+  authorId  String?
+  Blog      Blog     @relation(fields: [postId], references: [id])
+}
+
+model SearchHistory {
+  id        String   @id
+  text      String
+  userId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  User      User     @relation(fields: [userId], references: [id])
+}
+
+model ShortsVidVote {
+  userId    String
+  shortsvId String
+  type      VoteType
+  Shortsv   Shortsv  @relation(fields: [shortsvId], references: [id], onDelete: Cascade)
+  User      User     @relation(fields: [userId], references: [id])
+
+  @@id([userId, shortsvId])
+}
+
+model Shortsv {
+  id            String          @id
+  description   String?
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime
+  videoUrl      String
+  authorId      String
+  sharedVideoId String?
+  videoStatus   String?
+  communityId   String?
+  Comment       Comment[]
+  ShortsVidVote ShortsVidVote[]
+  User          User            @relation(fields: [authorId], references: [id])
+  Community     Community?      @relation(fields: [communityId], references: [id])
+}
+
+model Story {
+  id        String   @id
+  createdAt DateTime @default(now())
+  updatedAt DateTime
+  image     Json
+  authorId  String
+  User      User     @relation(fields: [authorId], references: [id])
+
+  @@index([authorId])
+}
+
+model Subscription {
+  userId      String
+  communityId String
+  Community   Community @relation(fields: [communityId], references: [id])
+  User        User      @relation(fields: [userId], references: [id])
+
+  @@id([userId, communityId])
+}
+
+model User {
+  id                                        String             @id
+  name                                      String?
+  handleName                                String?
+  bio                                       String?
+  email                                     String?            @unique
+  emailVerified                             DateTime?
+  image                                     String?
+  backgroundImage                           String?
+  password                                  String?
+  birthdate                                 DateTime?
+  onlineStatus                              Boolean            @default(false)
+  lastStatusChange                          DateTime           @default(now())
+  Account                                   Account[]
+  Blog                                      Blog[]
+  Comment                                   Comment[]
+  CommentVote                               CommentVote[]
+  Community                                 Community[]
+  Conversation_Conversation_userOneIdToUser Conversation[]     @relation("Conversation_userOneIdToUser")
+  Conversation_Conversation_userTwoIdToUser Conversation[]     @relation("Conversation_userTwoIdToUser")
+  Friend_Friend_requesterUserIdToUser       Friend[]           @relation("Friend_requesterUserIdToUser")
+  Friend_Friend_userIdToUser                Friend[]           @relation("Friend_userIdToUser")
+  History                                   History[]
+  Message                                   Message[]
+  Notification                              Notification[]
+  SearchHistory                             SearchHistory[]
+  ShortsVidVote                             ShortsVidVote[]
+  Shortsv                                   Shortsv[]
+  Story                                     Story[]
+  Subscription                              Subscription[]
+  UserPostedImages                          UserPostedImages[]
+  Vote                                      Vote[]
+}
+
+model UserPostedImages {
+  id        String    @id
+  createdAt DateTime  @default(now())
+  image     String?
+  authorId  String
+  Comment   Comment[]
+  User      User      @relation(fields: [authorId], references: [id])
+}
+
+model Vote {
+  userId String
+  postId String
+  type   VoteType
+  Blog   Blog     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  User   User     @relation(fields: [userId], references: [id])
+
+  @@id([userId, postId])
+}
+
+model passwordResetToken {
+  id      String   @id
+  email   String
+  token   String   @unique
+  expires DateTime
+
+  @@unique([email, token])
+}
+
+model searchData {
+  id   String @id
+  text String
+}
+
+model verificationToken {
+  id      String   @id
+  email   String
+  token   String   @unique
+  expires DateTime
+
+  @@unique([email, token])
+}
+
+enum VoteType {
+  UP
+  DOWN
+}

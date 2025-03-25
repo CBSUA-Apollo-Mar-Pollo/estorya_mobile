@@ -43,37 +43,47 @@ const HomeScreen = () => {
       <ScrollView>
         <View className="flex-col gap-y-1">
           <View className="bg-white ">
-            <View className="flex-row items-start justify-between  px-4">
-              <View className="flex-row py-2 gap-x-2">
-                <Image
-                  source={images.cryingcat}
-                  className="w-12 h-12 rounded-full"
-                  resizeMode="cover"
-                />
-                <View>
-                  <Text className="text-2xl font-extrabold">John Doe</Text>
-                  <View className="flex-row items-center justify-start">
-                    <Text>3d</Text>
-                    <Dot color="black" size={15} />
-                    <Globe color="black" size={12} />
+            {/*card header */}
+            <View className="px-4">
+              <View className="flex-row items-start justify-between ">
+                <View className="flex-row py-2 gap-x-2">
+                  <Image
+                    source={images.cryingcat}
+                    className="w-12 h-12 rounded-full"
+                    resizeMode="cover"
+                  />
+                  <View>
+                    <Text className="text-2xl font-extrabold">John Doe</Text>
+                    <View className="flex-row items-center justify-start">
+                      <Text>3d</Text>
+                      <Dot color="black" size={15} />
+                      <Globe color="black" size={12} />
+                    </View>
                   </View>
+                </View>
+
+                <View className="flex-row items-center mt-2 gap-x-6">
+                  <TouchableOpacity>
+                    <Ellipsis color="black" />
+                  </TouchableOpacity>
+                  <TouchableOpacity>
+                    <X color="black" />
+                  </TouchableOpacity>
                 </View>
               </View>
 
-              <View className="flex-row items-center mt-2 gap-x-6">
-                <TouchableOpacity>
-                  <Ellipsis color="black" />
-                </TouchableOpacity>
-                <TouchableOpacity>
-                  <X color="black" />
-                </TouchableOpacity>
+              {/* post caption */}
+              <View className="pb-1 px-1">
+                <Text className="text-2xl">Flying cat</Text>
               </View>
             </View>
 
+            {/* image */}
             <View className=" ">
               <AutoSizedAssetImage source={images.catflying} />
             </View>
 
+            {/* footer buttons */}
             <View className="flex-row justify-between py-2 px-4">
               <View className="flex-row items-center gap-x-2">
                 <TouchableOpacity>

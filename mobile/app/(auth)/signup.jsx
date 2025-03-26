@@ -1,29 +1,29 @@
-import { View, Text, TextInput, TouchableOpacity } from 'react-native'
-import React, { useState } from 'react'
-import { Eye, EyeOff } from 'lucide-react-native';
-import { useRouter } from 'expo-router';
+import { View, Text, TextInput, TouchableOpacity } from "react-native";
+import React, { useState } from "react";
+import { Eye, EyeOff } from "lucide-react-native";
+import { useRouter } from "expo-router";
 
 const SignUpScreen = () => {
-    const router = useRouter();
-      const [email, setEmail] = useState("");
-      const [password, setPassword] = useState("");
-      const [confirmPassword, setConfirmPassword] = useState("")
-      const [showPassword, setShowPassword] = useState(false);
-      const [confirmShowPassword, setConfirmShowPassword] = useState(false);
-      const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [confirmShowPassword, setConfirmShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   return (
     <View className="bg-white items-center justify-center h-full">
-         <Text className="font-bold text-5xl">Sign Up</Text>
+      <Text className="font-bold text-5xl">Sign Up</Text>
 
-         <View className="mt-10 w-full px-4 gap-y-4">
-        <TextInput  
+      <View className="mt-10 w-full px-4 gap-y-4">
+        <TextInput
           className="border border-neutral-400 rounded-md h-14 px-4"
           placeholder="Username"
           keyboardType="default"
           autoCapitalize="none"
         />
 
-        <TextInput  
+        <TextInput
           className="border border-neutral-400 rounded-md h-14 px-4"
           placeholder="Email"
           keyboardType="email-address"
@@ -74,11 +74,15 @@ const SignUpScreen = () => {
           </TouchableOpacity>
         </View>
 
-        <TouchableOpacity className="w-full bg-blue-500 h-14 justify-center items-center rounded-full">
-          <Text className="text-white font-semibold text-xl">
-            Submit
+        <View className="mt-12">
+          <Text className="text-center text-sm">
+            By continuing,you agree to our User Agreement and acknowledge that
+            you understand the privacy policy
           </Text>
-        </TouchableOpacity>
+          <TouchableOpacity className="mt-6 w-full bg-blue-500 h-14 justify-center items-center rounded-full">
+            <Text className="text-white font-semibold text-xl">Submit</Text>
+          </TouchableOpacity>
+        </View>
 
         <View className="justify-center items-center mt-2">
           <Text>
@@ -90,7 +94,7 @@ const SignUpScreen = () => {
         </View>
       </View>
     </View>
-  )
-}
+  );
+};
 
-export default SignUpScreen
+export default SignUpScreen;

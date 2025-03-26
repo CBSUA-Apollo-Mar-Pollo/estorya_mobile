@@ -1,14 +1,14 @@
 import { View, Text } from "react-native";
 import React from "react";
 import { Tabs } from "expo-router";
-import { Home, Menu, Play } from "lucide-react-native";
+import { Home, Menu, Play, PlusCircle } from "lucide-react-native";
 import { Icons } from "../../components/utils/Icons";
 
 const _layout = () => {
   return (
     <Tabs
       screenOptions={{
-        tabBarShowLabel: false,
+        // tabBarShowLabel: false,
         tabBarItemStyle: {
           width: "100%",
           height: "100%",
@@ -16,7 +16,6 @@ const _layout = () => {
           alignItems: "center",
         },
         tabBarStyle: {
-          paddingTop: 8,
           height: 50,
           backgroundColor: "white",
         },
@@ -29,7 +28,7 @@ const _layout = () => {
           headerShown: false,
           tabBarIcon: ({ focused }) => (
             <View className="items-center ">
-              <Icons.Home fill="#2563eb" width={26} height={26} />
+              <Icons.Home fill="#2563eb" width={29} height={29} />
             </View>
           ),
         }}
@@ -40,7 +39,15 @@ const _layout = () => {
         options={{
           title: "Watch",
           headerShown: false,
-          tabBarIcon: ({ focused }) => <Play color="#a1a1a1" size={25} />,
+          tabBarIcon: ({ focused }) => <Play color="#a1a1a1" size={29} />,
+        }}
+      />
+      <Tabs.Screen
+        name="create"
+        options={{
+          title: "Create",
+          headerShown: false,
+          tabBarIcon: ({ focused }) => <PlusCircle color="#a1a1a1" size={26} />,
         }}
       />
       <Tabs.Screen
@@ -49,14 +56,14 @@ const _layout = () => {
           title: "Communities",
           headerShown: false,
           tabBarIcon: ({ focused }) => (
-            <Icons.Group fill="#a1a1a1" width={28} height={28} />
+            <Icons.Group fill="#a1a1a1" width={29} height={29} />
           ),
         }}
       />
       <Tabs.Screen
         name="menu"
         options={{
-          title: "Notification",
+          title: "Menu ",
           headerShown: false,
           tabBarIcon: ({ focused }) => <Menu color="#a1a1a1" size={27} />,
         }}

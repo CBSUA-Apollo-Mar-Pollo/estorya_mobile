@@ -4,6 +4,7 @@ import catflying from "../assets/images/catflying.jpg";
 import March7 from "../assets/images/march7.jpg";
 import Heroic from "../assets/images/heroic.png";
 import Boa from "../assets/images/boa.png";
+import Placeholder from "../assets/images/placeholder.png";
 
 export const images = {
   google_logo,
@@ -12,4 +13,5 @@ export const images = {
   March7,
   Heroic,
   Boa,
+  Placeholder,
 };

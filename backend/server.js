@@ -2,20 +2,21 @@ import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
 
-import postsRoutes from "./routes/postsRoutes.js";
+import { PORT } from "./config/env.js";
+import postRouter from "./routes/posts.routes.js";
 
 const app = express();
+
 app.use(cors());
-app.use(bodyParser.json());
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
-const port = 3000;
-
-app.use(postsRoutes);
+app.use("/api/v1/posts", postRouter);
 
 // set server
-app.listen(port, () => {
+app.listen(PORT, () => {
   try {
-    console.log(`Server listening on ${port}`);
+    console.log(`Server listening on ${PORT}`);
   } catch (error) {
     console.log(error);
   }

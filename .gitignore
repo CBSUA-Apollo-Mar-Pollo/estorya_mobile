@@ -20,6 +20,9 @@ yarn-error.log
 *.seed
 *.tgz
 .env
+.env.development.local    
+.env.production.local    
+
 *.iml
 .idea/
 
@@ -40,3 +43,6 @@ Thumbs.db
 # Expo (if you're using Expo in React Native)
 .expo/
 .expo-shared/
+backend/.env.development.local
+backend/.env.development.local
+backend/.env.development.local

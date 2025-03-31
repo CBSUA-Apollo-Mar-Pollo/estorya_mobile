@@ -28,46 +28,40 @@ import axios from "axios";
 import { PORT } from "../../port";
 import AutoSizedImage from "../../components/auto-size-uri-image";
 import VideoScreen from "../../components/video-screen";
+import { useQuery } from "@tanstack/react-query";
 
 const HomeScreen = () => {
   const router = useRouter();
-  const [data, setData] = useState(null);
   const [refreshing, setRefreshing] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
 
-  const getData = async () => {
-    await axios
-      .get(`${PORT}/api/v1/posts`)
-      .then((res) => setData(res.data))
-      .catch((err) => {
-        // Log the full error message including response, request, and message
-        if (err.response) {
-          // The request was made, and the server responded with a status code
-          // that falls out of the range of 2xx
-          console.log("Response error:", err.response.data);
-          console.log("Response status:", err.response.status);
-          console.log("Response headers:", err.response.headers);
-        } else if (err.request) {
-          // The request was made but no response was received
-          console.log("Request error:", err.request);
-        } else {
-          // Something happened in setting up the request that triggered an error
-          console.log("Error message:", err.message);
-        }
-        console.log("Full error:", err);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  };
+  // const fetchData = async () => {
+  //   try {
+  //     const response = await axios.get(`${PORT}/api/v1/posts`);
+  //     return response.data;
+  //   } catch (error) {
+  //     // Catching and logging error without redundancy
+  //     if (error.response) {
+  //       console.error("Response error:", error.response);
+  //     } else if (error.request) {
+  //       console.error("Request error:", error.request);
+  //     } else {
+  //       console.error("Error message:", error.message);
+  //     }
+  //     throw new Error("Failed to fetch data");
+  //   }
+  // };
 
-  useEffect(() => {
-    getData();
-  }, []);
+  const { data, error, isLoading, refetch } = useQuery({
+    queryKey: ["posts"],
+    queryFn: async () => {
+      const response = await axios.get(`${PORT}/api/v1/posts`);
+      return response.data;
+    },
+  });
 
   const onRefresh = async () => {
     setRefreshing(true);
-    await getData();
+    refetch();
     setRefreshing(false);
   };
 
@@ -76,7 +70,9 @@ const HomeScreen = () => {
       <View className="flex-row items-center justify-between pt-2 pb-3 px-4 bg-white  border-b border-neutral-200">
         <Text className="text-4xl font-extrabold">Estorya</Text>
         <View className="flex-row gap-x-4 items-center">
-          <Search color="black" size={20} />
+          <TouchableOpacity onPress={() => router.push("/search")}>
+            <Search color="black" size={20} />
+          </TouchableOpacity>
           <TouchableOpacity onPress={() => router.push("/signin")}>
             <Text className="text-xl">Sign in</Text>
           </TouchableOpacity>
@@ -139,7 +135,7 @@ const HomeScreen = () => {
                   )}
                 </View>
 
-                {/* image */}
+                {/* if is image */}
                 {Array.isArray(item?.image) &&
                   item.image.length > 0 &&
                   item.image[0]?.url && (
@@ -148,6 +144,7 @@ const HomeScreen = () => {
                     </View>
                   )}
 
+                {/* if is video */}
                 {Array.isArray(item?.video) &&
                   item.video.length > 0 &&
                   item.video[0]?.url && (

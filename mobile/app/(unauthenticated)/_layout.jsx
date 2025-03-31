@@ -19,6 +19,7 @@ const _layout = () => {
           height: 50,
           backgroundColor: "white",
         },
+        tabBarInactiveTintColor: "black",
       }}
     >
       <Tabs.Screen
@@ -39,7 +40,7 @@ const _layout = () => {
         options={{
           title: "Watch",
           headerShown: false,
-          tabBarIcon: ({ focused }) => <Play color="#a1a1a1" size={29} />,
+          tabBarIcon: ({ focused }) => <Play color="black" size={29} />,
         }}
       />
       <Tabs.Screen
@@ -47,7 +48,7 @@ const _layout = () => {
         options={{
           title: "Create",
           headerShown: false,
-          tabBarIcon: ({ focused }) => <PlusCircle color="#a1a1a1" size={26} />,
+          tabBarIcon: ({ focused }) => <PlusCircle color="black" size={26} />,
         }}
       />
       <Tabs.Screen
@@ -56,7 +57,7 @@ const _layout = () => {
           title: "Communities",
           headerShown: false,
           tabBarIcon: ({ focused }) => (
-            <Icons.Group fill="#a1a1a1" width={29} height={29} />
+            <Icons.Group fill="black" width={29} height={29} />
           ),
         }}
       />
@@ -65,7 +66,7 @@ const _layout = () => {
         options={{
           title: "Menu ",
           headerShown: false,
-          tabBarIcon: ({ focused }) => <Menu color="#a1a1a1" size={27} />,
+          tabBarIcon: ({ focused }) => <Menu color="black" size={27} />,
         }}
       />
     </Tabs>

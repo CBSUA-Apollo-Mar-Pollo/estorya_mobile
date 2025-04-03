@@ -29,34 +29,34 @@ import { PORT } from "../../port";
 import AutoSizedImage from "../../components/auto-size-uri-image";
 import VideoScreen from "../../components/video-screen";
 import { useQuery } from "@tanstack/react-query";
+import PostImages from "../../components/post/post-images";
 
 const HomeScreen = () => {
   const router = useRouter();
   const [refreshing, setRefreshing] = useState(false);
 
-  // const fetchData = async () => {
-  //   try {
-  //     const response = await axios.get(`${PORT}/api/v1/posts`);
-  //     return response.data;
-  //   } catch (error) {
-  //     // Catching and logging error without redundancy
-  //     if (error.response) {
-  //       console.error("Response error:", error.response);
-  //     } else if (error.request) {
-  //       console.error("Request error:", error.request);
-  //     } else {
-  //       console.error("Error message:", error.message);
-  //     }
-  //     throw new Error("Failed to fetch data");
-  //   }
-  // };
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(`${PORT}/api/v1/posts`);
+      return response.data;
+    } catch (error) {
+      // Catching and logging error without redundancy
+      if (error.response) {
+        alert("Response error:", error.response);
+      } else if (error.request) {
+        alert(
+          "Request error: we couldn't reach the server. Please try again later."
+        );
+      } else {
+        alert("Error message:", error.message);
+      }
+      throw new Error("Failed to fetch data");
+    }
+  };
 
   const { data, error, isLoading, refetch } = useQuery({
     queryKey: ["posts"],
-    queryFn: async () => {
-      const response = await axios.get(`${PORT}/api/v1/posts`);
-      return response.data;
-    },
+    queryFn: fetchData,
   });
 
   const onRefresh = async () => {
@@ -91,7 +91,6 @@ const HomeScreen = () => {
         >
           <FlatList
             data={data}
-            keyExtractor={(item) => item.id}
             ItemSeparatorComponent={() => <View style={{ height: 5 }} />}
             scrollEnabled={false}
             renderItem={({ item }) => (
@@ -140,6 +139,7 @@ const HomeScreen = () => {
                   item.image.length > 0 &&
                   item.image[0]?.url && (
                     <View className=" ">
+                      <PostImages images={item?.image} />
                       <AutoSizedImage uri={item?.image[0]?.url} />
                     </View>
                   )}

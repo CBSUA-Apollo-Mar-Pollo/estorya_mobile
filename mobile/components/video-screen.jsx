@@ -1,11 +1,10 @@
 import { useEvent } from "expo";
 import { useVideoPlayer, VideoView } from "expo-video";
-import { StyleSheet, View, Button } from "react-native";
+import { StyleSheet, View, Button, Dimensions } from "react-native";
 
 export default function VideoScreen({ videoSource }) {
   const player = useVideoPlayer(videoSource, (player) => {
     player.loop = true;
-
     player.muted = true;
   });
 
@@ -30,10 +29,11 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+    backgroundColor: "black",
   },
   video: {
-    width: 350,
-    height: 275,
+    width: Dimensions.get("window").width,
+    height: Dimensions.get("window").width,
   },
   controlsContainer: {
     padding: 10,

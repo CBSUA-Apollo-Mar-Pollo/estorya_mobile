@@ -7,8 +7,6 @@ const AutoSizedImage = ({ uri }) => {
 
   const screenWidth = Dimensions.get("window").width;
 
-  console.log(uri);
-
   useEffect(() => {
     Image.getSize(
       uri,

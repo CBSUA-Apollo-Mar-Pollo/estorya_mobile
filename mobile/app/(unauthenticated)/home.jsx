@@ -30,6 +30,7 @@ import AutoSizedImage from "../../components/auto-size-uri-image";
 import VideoScreen from "../../components/video-screen";
 import { useQuery } from "@tanstack/react-query";
 import PostImages from "../../components/post/post-images";
+import { formatTimeToNow } from "../../lib/utils";
 
 const HomeScreen = () => {
   const router = useRouter();
@@ -64,6 +65,8 @@ const HomeScreen = () => {
     refetch();
     setRefreshing(false);
   };
+
+  console.log(data);
 
   return (
     <View className="bg-neutral-300 h-full">
@@ -101,7 +104,7 @@ const HomeScreen = () => {
                     <View className="flex-row py-2 gap-x-2">
                       <Image
                         source={{ uri: item.author.image }}
-                        className="w-12 h-12 rounded-full"
+                        className="w-12 h-12 rounded-full mt-0.5"
                         resizeMode="cover"
                       />
                       <View>
@@ -109,7 +112,9 @@ const HomeScreen = () => {
                           {item.author.name}
                         </Text>
                         <View className="flex-row items-center justify-start">
-                          <Text>3d</Text>
+                          <Text className="text-sm">
+                            {formatTimeToNow(new Date(item?.createdAt))}
+                          </Text>
                           <Dot color="black" size={15} />
                           <Globe color="black" size={12} />
                         </View>
@@ -118,10 +123,10 @@ const HomeScreen = () => {
 
                     <View className="flex-row items-center mt-2 gap-x-6">
                       <TouchableOpacity>
-                        <Ellipsis color="#737373" />
+                        <Ellipsis color="#262626" />
                       </TouchableOpacity>
                       <TouchableOpacity>
-                        <X color="#737373" />
+                        <X color="#262626" />
                       </TouchableOpacity>
                     </View>
                   </View>
@@ -140,7 +145,6 @@ const HomeScreen = () => {
                   item.image[0]?.url && (
                     <View className=" ">
                       <PostImages images={item?.image} />
-                      <AutoSizedImage uri={item?.image[0]?.url} />
                     </View>
                   )}
 
@@ -157,24 +161,24 @@ const HomeScreen = () => {
                 <View className="flex-row justify-between py-3 px-6">
                   <View className="flex-row items-center gap-x-2">
                     <TouchableOpacity>
-                      <ArrowBigUp color="#737373" />
+                      <ArrowBigUp color="#262626" />
                     </TouchableOpacity>
-                    <Text className="text-xl text-neutral-500">0</Text>
+                    <Text className="text-xl text-neutral-800">0</Text>
                     <TouchableOpacity>
-                      <ArrowBigDown color="#737373" />
+                      <ArrowBigDown color="#262626" />
                     </TouchableOpacity>
                   </View>
 
                   <TouchableOpacity className="flex-row items-center gap-x-2">
-                    <MessageCircle color="#737373" />
-                    <Text className="text-lg text-neutral-500 font-medium">
+                    <MessageCircle color="#262626" />
+                    <Text className="text-lg text-neutral-800 font-medium">
                       Comment
                     </Text>
                   </TouchableOpacity>
 
                   <TouchableOpacity className="flex-row items-center gap-x-2">
-                    <Forward color="#737373" />
-                    <Text className="text-lg text-neutral-500 font-medium">
+                    <Forward color="#262626" />
+                    <Text className="text-lg text-neutral-800 font-medium">
                       Share
                     </Text>
                   </TouchableOpacity>

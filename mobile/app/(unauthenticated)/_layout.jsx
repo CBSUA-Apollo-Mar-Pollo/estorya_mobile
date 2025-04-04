@@ -27,11 +27,17 @@ const _layout = () => {
         options={{
           title: "Home",
           headerShown: false,
-          tabBarIcon: ({ focused }) => (
-            <View className="items-center ">
-              <Icons.Home fill="#2563eb" width={29} height={29} />
-            </View>
-          ),
+          tabBarIcon: ({ focused }) => {
+            return (
+              <View className="items-center ">
+                <Icons.Home
+                  fill={focused ? "#2563eb" : "#262626"}
+                  width={29}
+                  height={29}
+                />
+              </View>
+            );
+          },
         }}
       />
 
@@ -40,33 +46,24 @@ const _layout = () => {
         options={{
           title: "Watch",
           headerShown: false,
-          tabBarIcon: ({ focused }) => <Play color="black" size={29} />,
+          tabBarIcon: ({ focused }) => (
+            <Play color={focused ? "#2563eb" : "#262626"} size={29} />
+          ),
         }}
       />
-      <Tabs.Screen
-        name="create"
-        options={{
-          title: "Create",
-          headerShown: false,
-          tabBarIcon: ({ focused }) => <PlusCircle color="black" size={26} />,
-        }}
-      />
+
       <Tabs.Screen
         name="communities"
         options={{
           title: "Communities",
           headerShown: false,
           tabBarIcon: ({ focused }) => (
-            <Icons.Group fill="black" width={29} height={29} />
+            <Icons.Group
+              fill={focused ? "#2563eb" : "#262626"}
+              width={29}
+              height={29}
+            />
           ),
-        }}
-      />
-      <Tabs.Screen
-        name="menu"
-        options={{
-          title: "Menu ",
-          headerShown: false,
-          tabBarIcon: ({ focused }) => <Menu color="black" size={27} />,
         }}
       />
     </Tabs>

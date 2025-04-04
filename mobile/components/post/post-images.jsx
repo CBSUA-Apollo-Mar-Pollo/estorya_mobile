@@ -1,4 +1,4 @@
-import { View, Text, FlatList } from "react-native";
+import { View, Text, FlatList, Image, Dimensions } from "react-native";
 import React from "react";
 
 import AutoSizedImage from "../auto-size-uri-image";
@@ -12,62 +12,131 @@ const PostImages = ({ images }) => {
         </View>
       )}
 
-      {/* {images.length === 2 && (
-        <View>
-          <FlatList
-            data={images}
-            renderItem={(item) => <AutoSizedImage uri={item?.url} />}
-            keyExtractor={(item, index) => index.toString()}
-            numColumns={2}
-            scrollEnabled={false}
+      {images.length === 2 && (
+        <View className="flex-row">
+          <Image
+            source={{ uri: images[0]?.url }}
+            style={{
+              width: Dimensions.get("window").width / 2,
+              height: Dimensions.get("window").width / 2,
+              resizeMode: "cover",
+              marginRight: 1.5,
+            }}
           />
-        </View>
-      )} */}
-
-      {images.length === 4 && (
-        <View>
-          <View className="grid grid-cols-2">
-            <AutoSizedImage uri={images[0]?.url} />
-            <AutoSizedImage uri={images[1]?.url} />
-          </View>
-          {/* <FlatList
-            data={images}
-            renderItem={({ item }) => (
-              <View className="grid grid-cols-2">
-                <AutoSizedImage uri={item.url} />
-              </View>
-            )}
-            keyExtractor={(item, index) => index.toString()}
-            scrollEnabled={false}
-          /> */}
+          <Image
+            source={{ uri: images[1]?.url }}
+            style={{
+              width: Dimensions.get("window").width / 2,
+              height: Dimensions.get("window").width / 2,
+              resizeMode: "cover",
+              marginLeft: 1.5,
+            }}
+          />
         </View>
       )}
 
-      {/* {images.length === 5 && (
+      {images.length === 4 && (
+        <View className="m-4">
+          <View className="flex-row">
+            <Image
+              source={{ uri: images[0]?.url }}
+              style={{
+                width: "50%", // 50% width to create a 2-column layout
+                height: 200, // Adjust height to your preference
+                resizeMode: "cover",
+                marginRight: 1.5,
+              }}
+            />
+            <Image
+              source={{ uri: images[1]?.url }}
+              style={{
+                width: "50%",
+                height: 200,
+                resizeMode: "cover",
+                marginLeft: 1.5,
+              }}
+            />
+          </View>
+          <View className="flex-row">
+            <Image
+              source={{ uri: images[2]?.url }}
+              style={{
+                width: "50%",
+                height: 200,
+                resizeMode: "cover",
+                marginRight: 1.5,
+                marginTop: 3,
+              }}
+            />
+            <Image
+              source={{ uri: images[3]?.url }}
+              style={{
+                width: "50%",
+                height: 200,
+                resizeMode: "cover",
+                marginLeft: 1.5,
+                marginTop: 3,
+              }}
+            />
+          </View>
+        </View>
+      )}
+
+      {images.length === 5 && (
         <View>
           <View className="flex-row">
-            <AutoSizedImage uri={images[0]?.url} />
-            <AutoSizedImage uri={images[1]?.url} />
+            <Image
+              source={{ uri: images[0]?.url }}
+              style={{
+                width: "50%",
+                height: 200,
+                resizeMode: "cover",
+                marginRight: 2,
+              }}
+            />
+            <Image
+              source={{ uri: images[1]?.url }}
+              style={{
+                width: "50%",
+                height: 200,
+                resizeMode: "cover",
+                marginLeft: 2,
+              }}
+            />
           </View>
-
-          <FlatList
-            data={images}
-            renderItem={(item, index) => {
-              if (index === 0) {
-                return null;
-              }
-
-              if (index === 1) {
-                return null;
-              }
-              return <AutoSizedImage uri={item?.url} />;
-            }}
-            keyExtractor={(item, index) => index.toString()}
-            numColumns={4}
-            scrollEnabled={false}
-          />
+          <View className="flex-row">
+            <Image
+              source={{ uri: images[2]?.url }}
+              style={{
+                width: "33.33%",
+                height: 130,
+                resizeMode: "cover",
+                marginRight: 2,
+                marginTop: 2,
+              }}
+            />
+            <Image
+              source={{ uri: images[3]?.url }}
+              style={{
+                width: "33.33%",
+                height: 130,
+                resizeMode: "cover",
+                marginTop: 2,
+              }}
+            />
+            <Image
+              source={{ uri: images[4]?.url }}
+              style={{
+                width: "33.33%",
+                height: 130,
+                resizeMode: "cover",
+                marginLeft: 2,
+                marginTop: 2,
+              }}
+            />
+          </View>
         </View>
-      )} */}
+      )}
     </View>
   );
 };

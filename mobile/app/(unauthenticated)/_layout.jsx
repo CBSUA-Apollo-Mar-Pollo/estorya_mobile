@@ -31,7 +31,7 @@ const _layout = () => {
             return (
               <View className="items-center ">
                 <Icons.Home
-                  fill={focused ? "#2563eb" : "#262626"}
+                  fill={focused ? "#2563eb" : "black"}
                   width={29}
                   height={29}
                 />
@@ -47,7 +47,7 @@ const _layout = () => {
           title: "Watch",
           headerShown: false,
           tabBarIcon: ({ focused }) => (
-            <Play color={focused ? "#2563eb" : "#262626"} size={29} />
+            <Play color={focused ? "#2563eb" : "black"} size={29} />
           ),
         }}
       />
@@ -59,7 +59,7 @@ const _layout = () => {
           headerShown: false,
           tabBarIcon: ({ focused }) => (
             <Icons.Group
-              fill={focused ? "#2563eb" : "#262626"}
+              fill={focused ? "#2563eb" : "black"}
               width={29}
               height={29}
             />

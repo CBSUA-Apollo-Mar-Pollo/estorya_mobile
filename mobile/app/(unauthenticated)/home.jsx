@@ -29,8 +29,8 @@ import { PORT } from "../../port";
 import AutoSizedImage from "../../components/auto-size-uri-image";
 import VideoScreen from "../../components/video-screen";
 import { useQuery } from "@tanstack/react-query";
-import PostImages from "../../components/post/post-images";
 import { formatTimeToNow } from "../../lib/utils";
+import MultipleImageRenderer from "../../components/post/multiple-image-renderer";
 
 const HomeScreen = () => {
   const router = useRouter();
@@ -66,12 +66,10 @@ const HomeScreen = () => {
     setRefreshing(false);
   };
 
-  console.log(data);
-
   return (
     <View className="bg-neutral-300 h-full">
       <View className="flex-row items-center justify-between pt-2 pb-3 px-4 bg-white  border-b border-neutral-200">
-        <Text className="text-4xl font-extrabold">Estorya</Text>
+        <Text className="text-3xl font-extrabold">Estorya</Text>
         <View className="flex-row gap-x-4 items-center">
           <TouchableOpacity onPress={() => router.push("/search")}>
             <Search color="black" size={20} />
@@ -144,7 +142,10 @@ const HomeScreen = () => {
                   item.image.length > 0 &&
                   item.image[0]?.url && (
                     <View className=" ">
-                      <PostImages images={item?.image} />
+                      <MultipleImageRenderer
+                        images={item?.image}
+                        postId={item.id}
+                      />
                     </View>
                   )}
 

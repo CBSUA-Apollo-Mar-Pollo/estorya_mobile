@@ -2,8 +2,9 @@ import { View, Text, FlatList, Image, Dimensions } from "react-native";
 import React from "react";
 
 import AutoSizedImage from "../auto-size-uri-image";
+import { Link } from "expo-router";
 
-const PostImages = ({ images }) => {
+const MultipleImageRenderer = ({ images, postId }) => {
   return (
     <View>
       {images.length === 1 && (
@@ -36,7 +37,7 @@ const PostImages = ({ images }) => {
       )}
 
       {images.length === 4 && (
-        <View className="m-4">
+        <Link href={`/post-detail/${postId}`} className="m-4">
           <View className="flex-row">
             <Image
               source={{ uri: images[0]?.url }}
@@ -79,7 +80,7 @@ const PostImages = ({ images }) => {
               }}
             />
           </View>
-        </View>
+        </Link>
       )}
 
       {images.length === 5 && (
@@ -141,4 +142,4 @@ const PostImages = ({ images }) => {
   );
 };
 
-export default PostImages;
+export default MultipleImageRenderer;

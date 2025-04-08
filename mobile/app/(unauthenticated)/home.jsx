@@ -48,6 +48,7 @@ const HomeScreen = () => {
         alert(
           "Request error: we couldn't reach the server. Please try again later."
         );
+        console.log(error.request)
       } else {
         alert("Error message:", error.message);
       }
@@ -141,7 +142,7 @@ const HomeScreen = () => {
                 {Array.isArray(item?.image) &&
                   item.image.length > 0 &&
                   item.image[0]?.url && (
-                    <View className=" ">
+                    <View className="">
                       <MultipleImageRenderer
                         images={item?.image}
                         postId={item.id}

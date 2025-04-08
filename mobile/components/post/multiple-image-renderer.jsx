@@ -1,10 +1,15 @@
-import { View, Text, FlatList, Image, Dimensions } from "react-native";
+import { View, Text, FlatList, Image, Dimensions, TouchableOpacity } from "react-native";
 import React from "react";
 
 import AutoSizedImage from "../auto-size-uri-image";
-import { Link } from "expo-router";
+import { Link, useRouter } from "expo-router";
 
 const MultipleImageRenderer = ({ images, postId }) => {
+  const router = useRouter();
+
+  const handleNaviagte = () => {
+    router.push(`/post-detail/${postId}`)
+  }
   return (
     <View>
       {images.length === 1 && (
@@ -37,7 +42,7 @@ const MultipleImageRenderer = ({ images, postId }) => {
       )}
 
       {images.length === 4 && (
-        <Link href={`/post-detail/${postId}`} className="m-4">
+        <TouchableOpacity onPress={() => handleNaviagte()} >
           <View className="flex-row">
             <Image
               source={{ uri: images[0]?.url }}
@@ -80,7 +85,7 @@ const MultipleImageRenderer = ({ images, postId }) => {
               }}
             />
           </View>
-        </Link>
+        </TouchableOpacity>
       )}
 
       {images.length === 5 && (

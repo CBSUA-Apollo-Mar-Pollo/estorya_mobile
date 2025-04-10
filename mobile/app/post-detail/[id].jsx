@@ -10,8 +10,6 @@ import SingleImageScreen from "../../components/post/single-image";
 const PostScreen = () => {
   const { id } = useLocalSearchParams();
 
-  console.log(id, "from post detail screen");
-
   const fetchPostDetails = async () => {
     const payload = { postId: id };
     try {

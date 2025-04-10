@@ -12,7 +12,6 @@ import {
 import AutoSizedImage from "../auto-size-uri-image";
 
 const ImageList = ({ postDetails }) => {
-  console.log(postDetails, "image list screen");
   return (
     <View className="bg-white h-full">
       <View className="px-4">

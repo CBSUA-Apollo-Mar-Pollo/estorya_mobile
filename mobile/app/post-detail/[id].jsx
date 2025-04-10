@@ -47,15 +47,7 @@ const PostScreen = () => {
     );
   }
 
-  if (data.image.length > 1) {
-    return <ImageList postDetails={data} />;
-  }
-
-  return (
-    <View>
-      <SingleImageScreen />
-    </View>
-  );
+  return <ImageList postDetails={data} />;
 };
 
 export default PostScreen;

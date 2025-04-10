@@ -10,8 +10,18 @@ import {
   MessageCircle,
 } from "lucide-react-native";
 import AutoSizedImage from "../auto-size-uri-image";
+import { useSingleImage } from "../../hooks/useSingleImage";
+import { useRouter } from "expo-router";
 
 const ImageList = ({ postDetails }) => {
+  const router = useRouter();
+  const { data, setImageData } = useSingleImage();
+
+  const goToSingleImageScreen = (item) => {
+    setImageData(item);
+    router.push("/post-detail/single-image");
+  };
+
   return (
     <View className="bg-white h-full">
       <View className="px-4">
@@ -72,7 +82,10 @@ const ImageList = ({ postDetails }) => {
       <FlatList
         data={postDetails.image}
         renderItem={({ item }) => (
-          <View className="">
+          <TouchableOpacity
+            onPress={() => goToSingleImageScreen(item)}
+            className=""
+          >
             <AutoSizedImage uri={item?.url} />
             <View className="flex-row justify-between py-3 px-6 border-b border-neutral-300">
               <View className="flex-row items-center gap-x-2">
@@ -99,7 +112,7 @@ const ImageList = ({ postDetails }) => {
                 </Text>
               </TouchableOpacity>
             </View>
-          </View>
+          </TouchableOpacity>
         )}
       />
     </View>

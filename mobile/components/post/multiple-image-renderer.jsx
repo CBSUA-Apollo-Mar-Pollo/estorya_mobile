@@ -1,4 +1,11 @@
-import { View, Text, FlatList, Image, Dimensions, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  FlatList,
+  Image,
+  Dimensions,
+  TouchableOpacity,
+} from "react-native";
 import React from "react";
 
 import AutoSizedImage from "../auto-size-uri-image";
@@ -8,8 +15,9 @@ const MultipleImageRenderer = ({ images, postId }) => {
   const router = useRouter();
 
   const handleNaviagte = () => {
-    router.push(`/post-detail/${postId}`)
-  }
+    router.push(`/post-detail/${postId}`);
+  };
+
   return (
     <View>
       {images.length === 1 && (
@@ -42,7 +50,7 @@ const MultipleImageRenderer = ({ images, postId }) => {
       )}
 
       {images.length === 4 && (
-        <TouchableOpacity onPress={() => handleNaviagte()} >
+        <TouchableOpacity onPress={() => handleNaviagte()}>
           <View className="flex-row">
             <Image
               source={{ uri: images[0]?.url }}

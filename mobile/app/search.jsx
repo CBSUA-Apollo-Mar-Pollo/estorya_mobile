@@ -16,9 +16,7 @@ const SearchScreen = () => {
     <View className="bg-white h-full">
       <View className="border-b border-neutral-300 mt-4">
         <View className="flex-row items-center justify-center ml-10 mr-8 gap-x-5 mb-2">
-          <TouchableOpacity
-            onPress={() => router.push("/(unauthenticated)/home")}
-          >
+          <TouchableOpacity onPress={() => router.back()}>
             <ArrowLeft color="#737373" />
           </TouchableOpacity>
           <View className="w-full">

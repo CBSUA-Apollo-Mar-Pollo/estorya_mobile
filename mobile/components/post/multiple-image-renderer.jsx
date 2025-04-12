@@ -5,25 +5,33 @@ import {
   Image,
   Dimensions,
   TouchableOpacity,
+  Pressable,
 } from "react-native";
 import React from "react";
 
 import AutoSizedImage from "../auto-size-uri-image";
 import { Link, useRouter } from "expo-router";
+import { useSingleImage } from "../../hooks/useSingleImage";
 
 const MultipleImageRenderer = ({ images, postId }) => {
   const router = useRouter();
+  const { data, setImageData } = useSingleImage();
 
   const handleNaviagte = () => {
     router.push(`/post-detail/${postId}`);
   };
 
+  const goToSingleImageScreen = (item) => {
+    setImageData(item);
+    router.push("/post-detail/single-image");
+  };
+
   return (
     <View>
       {images.length === 1 && (
-        <View>
+        <Pressable onPress={() => goToSingleImageScreen(images[0])}>
           <AutoSizedImage uri={images[0]?.url} />
-        </View>
+        </Pressable>
       )}
 
       {images.length === 2 && (

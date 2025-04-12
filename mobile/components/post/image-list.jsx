@@ -1,4 +1,11 @@
-import { View, Text, Image, TouchableOpacity, FlatList } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  FlatList,
+  Pressable,
+} from "react-native";
 import React from "react";
 import { formatTimeToNow } from "../../lib/utils";
 import {
@@ -82,10 +89,7 @@ const ImageList = ({ postDetails }) => {
       <FlatList
         data={postDetails.image}
         renderItem={({ item }) => (
-          <TouchableOpacity
-            onPress={() => goToSingleImageScreen(item)}
-            className=""
-          >
+          <Pressable onPress={() => goToSingleImageScreen(item)} className="">
             <AutoSizedImage uri={item?.url} />
             <View className="flex-row justify-between py-3 px-6 border-b border-neutral-300">
               <View className="flex-row items-center gap-x-2">
@@ -112,7 +116,7 @@ const ImageList = ({ postDetails }) => {
                 </Text>
               </TouchableOpacity>
             </View>
-          </TouchableOpacity>
+          </Pressable>
         )}
       />
     </View>

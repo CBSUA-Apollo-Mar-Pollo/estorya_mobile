@@ -13,11 +13,11 @@ import AutoSizedImage from "../auto-size-uri-image";
 import { Link, useRouter } from "expo-router";
 import { useSingleImage } from "../../hooks/useSingleImage";
 
-const MultipleImageRenderer = ({ images, postId }) => {
+const MultipleImageRenderer = ({ postData, postId }) => {
   const router = useRouter();
   const { data, setImageData } = useSingleImage();
 
-  const handleNaviagte = () => {
+  const handleNavigate = () => {
     router.push(`/post-detail/${postId}`);
   };
 
@@ -28,16 +28,16 @@ const MultipleImageRenderer = ({ images, postId }) => {
 
   return (
     <View>
-      {images.length === 1 && (
-        <Pressable onPress={() => goToSingleImageScreen(images[0])}>
-          <AutoSizedImage uri={images[0]?.url} />
+      {postData.image.length === 1 && (
+        <Pressable onPress={() => goToSingleImageScreen(postData)}>
+          <AutoSizedImage uri={postData.image[0]?.url} />
         </Pressable>
       )}
 
-      {images.length === 2 && (
+      {postData.image.length === 2 && (
         <View className="flex-row">
           <Image
-            source={{ uri: images[0]?.url }}
+            source={{ uri: postData.image[0]?.url }}
             style={{
               width: Dimensions.get("window").width / 2,
               height: Dimensions.get("window").width / 2,
@@ -46,7 +46,7 @@ const MultipleImageRenderer = ({ images, postId }) => {
             }}
           />
           <Image
-            source={{ uri: images[1]?.url }}
+            source={{ uri: postData.image[1]?.url }}
             style={{
               width: Dimensions.get("window").width / 2,
               height: Dimensions.get("window").width / 2,
@@ -57,11 +57,11 @@ const MultipleImageRenderer = ({ images, postId }) => {
         </View>
       )}
 
-      {images.length === 4 && (
-        <TouchableOpacity onPress={() => handleNaviagte()}>
+      {postData.image.length === 4 && (
+        <TouchableOpacity onPress={() => handleNavigate()}>
           <View className="flex-row">
             <Image
-              source={{ uri: images[0]?.url }}
+              source={{ uri: postData.image[0]?.url }}
               style={{
                 width: "50%", // 50% width to create a 2-column layout
                 height: 200, // Adjust height to your preference
@@ -70,7 +70,7 @@ const MultipleImageRenderer = ({ images, postId }) => {
               }}
             />
             <Image
-              source={{ uri: images[1]?.url }}
+              source={{ uri: postData.image[1]?.url }}
               style={{
                 width: "50%",
                 height: 200,
@@ -81,7 +81,7 @@ const MultipleImageRenderer = ({ images, postId }) => {
           </View>
           <View className="flex-row">
             <Image
-              source={{ uri: images[2]?.url }}
+              source={{ uri: postData.image[2]?.url }}
               style={{
                 width: "50%",
                 height: 200,
@@ -91,7 +91,7 @@ const MultipleImageRenderer = ({ images, postId }) => {
               }}
             />
             <Image
-              source={{ uri: images[3]?.url }}
+              source={{ uri: postData.image[3]?.url }}
               style={{
                 width: "50%",
                 height: 200,
@@ -104,11 +104,11 @@ const MultipleImageRenderer = ({ images, postId }) => {
         </TouchableOpacity>
       )}
 
-      {images.length === 5 && (
+      {postData.image.length === 5 && (
         <View>
           <View className="flex-row">
             <Image
-              source={{ uri: images[0]?.url }}
+              source={{ uri: postData.image[0]?.url }}
               style={{
                 width: "50%",
                 height: 200,
@@ -117,7 +117,7 @@ const MultipleImageRenderer = ({ images, postId }) => {
               }}
             />
             <Image
-              source={{ uri: images[1]?.url }}
+              source={{ uri: postData.image[1]?.url }}
               style={{
                 width: "50%",
                 height: 200,
@@ -128,7 +128,7 @@ const MultipleImageRenderer = ({ images, postId }) => {
           </View>
           <View className="flex-row">
             <Image
-              source={{ uri: images[2]?.url }}
+              source={{ uri: postData.image[2]?.url }}
               style={{
                 width: "33.33%",
                 height: 130,
@@ -138,7 +138,7 @@ const MultipleImageRenderer = ({ images, postId }) => {
               }}
             />
             <Image
-              source={{ uri: images[3]?.url }}
+              source={{ uri: postData.image[3]?.url }}
               style={{
                 width: "33.33%",
                 height: 130,
@@ -147,7 +147,7 @@ const MultipleImageRenderer = ({ images, postId }) => {
               }}
             />
             <Image
-              source={{ uri: images[4]?.url }}
+              source={{ uri: postData.image[4]?.url }}
               style={{
                 width: "33.33%",
                 height: 130,

@@ -17,6 +17,7 @@
   "dependencies": {
     "@expo/vector-icons": "^14.0.2",
     "@react-navigation/bottom-tabs": "^7.2.0",
+    "@react-navigation/material-top-tabs": "^7.2.10",
     "@react-navigation/native": "^7.0.14",
     "@tanstack/react-query": "^5.71.1",
     "axios": "^1.8.4",
@@ -45,11 +46,13 @@
     "react-native-safe-area-context": "^4.12.0",
     "react-native-screens": "~4.4.0",
     "react-native-svg": "^15.8.0",
+    "react-native-tab-view": "^4.0.10",
     "react-native-video": "^6.11.0",
     "react-native-web": "~0.19.13",
     "react-native-webview": "13.12.5",
     "tailwind": "^4.0.0",
-    "zustand": "^5.0.3"
+    "zustand": "^5.0.3",
+    "react-native-pager-view": "6.5.1"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

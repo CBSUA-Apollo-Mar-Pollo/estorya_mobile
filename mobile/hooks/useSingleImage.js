@@ -1,6 +1,7 @@
 import { create } from "zustand";
 
 export const useSingleImage = create((set) => ({
-  data: {},
-  setImageData: (imageData) => set({ data: imageData }),
+  postData: {},
+  image: {},
+  setImageData: (postData, imageData) => set({ postData, image: imageData }),
 }));

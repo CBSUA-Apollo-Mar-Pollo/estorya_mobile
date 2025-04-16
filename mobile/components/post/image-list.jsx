@@ -24,10 +24,12 @@ const ImageList = ({ postDetails }) => {
   const router = useRouter();
   const { data, setImageData } = useSingleImage();
 
-  const goToSingleImageScreen = (item) => {
-    setImageData(item);
+  const goToSingleImageScreen = (imageData) => {
+    setImageData(postDetails, imageData);
     router.push("/post-detail/single-image");
   };
+
+  console.log(postDetails, "post details");
 
   return (
     <View className="bg-white h-full">

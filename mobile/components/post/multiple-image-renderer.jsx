@@ -15,14 +15,14 @@ import { useSingleImage } from "../../hooks/useSingleImage";
 
 const MultipleImageRenderer = ({ postData, postId }) => {
   const router = useRouter();
-  const { data, setImageData } = useSingleImage();
+  const { setImageData } = useSingleImage();
 
   const handleNavigate = () => {
     router.push(`/post-detail/${postId}`);
   };
 
   const goToSingleImageScreen = (item) => {
-    setImageData(item);
+    setImageData(item, postData.image[0]);
     router.push("/post-detail/single-image");
   };
 

@@ -12,11 +12,14 @@ import {
   X,
 } from "lucide-react-native";
 import { useRouter } from "expo-router";
+import { formatTimeToNow } from "../../lib/utils";
 
 const SingleImage = () => {
   const router = useRouter();
-  const { data } = useSingleImage();
+  const { postData, image } = useSingleImage();
   const [toggleUI, setToggleUI] = useState(true);
+
+  console.log(postData);
 
   return (
     <Pressable
@@ -36,21 +39,23 @@ const SingleImage = () => {
         </View>
       )}
       <StatusBar backgroundColor="black" style="light" />
-      <AutoSizedImage uri={data?.url} />
+      <AutoSizedImage uri={image?.url} />
 
       {toggleUI && (
         <View className="absolute bottom-0 w-full ">
           <View className="bg-black/60 px-3 pt-2">
             <View>
-              <Text className="text-white font-bold">John Doe</Text>
+              <Text className="text-white font-bold">
+                {postData.author.name}
+              </Text>
               <Text className="text-neutral-300 text-sm font-light">
-                5 hours ago
+                {formatTimeToNow(new Date(postData?.createdAt))}
               </Text>
             </View>
 
             <TouchableOpacity className="my-4  border-2 border-white rounded">
               <Text className="text-white text-center p-1.5 text-sm">
-                MESSAGE JOHN DOE
+                MESSAGE {postData.author.name.toUpperCase()}
               </Text>
             </TouchableOpacity>
 

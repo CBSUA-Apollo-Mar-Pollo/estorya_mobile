@@ -69,18 +69,6 @@ const HomeScreen = () => {
 
   return (
     <View className="bg-neutral-300 h-full">
-      <View className="flex-row items-center justify-between pt-2 pb-3 px-4 bg-white  border-b border-neutral-200">
-        <Text className="text-3xl font-extrabold">Estorya</Text>
-        <View className="flex-row gap-x-4 items-center">
-          <TouchableOpacity onPress={() => router.push("/search")}>
-            <Search color="black" size={20} />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => router.push("/signin")}>
-            <Text className="text-xl">Sign in</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-
       {isLoading ? (
         <View className="flex-col items-center justify-center h-full">
           <ActivityIndicator size={60} color="#000ff" className="mb-20" />

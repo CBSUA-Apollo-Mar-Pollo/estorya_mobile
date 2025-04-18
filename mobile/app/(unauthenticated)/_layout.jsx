@@ -1,32 +1,29 @@
-import { View, Text } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import React from "react";
-import { Tabs } from "expo-router";
-import { Home, Menu, Play, PlusCircle } from "lucide-react-native";
+import { usePathname, withLayoutContext } from "expo-router";
+import { Play, Search } from "lucide-react-native";
 import { Icons } from "../../components/utils/Icons";
+import { useRoute } from "@react-navigation/native";
+
+import CustomHeader from "../../components/CustomHeader";
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+
+const { Navigator } = createMaterialTopTabNavigator();
+
+export const MaterialTopTabs = withLayoutContext(Navigator);
 
 const _layout = () => {
   return (
-    <Tabs
+    <MaterialTopTabs
       screenOptions={{
-        // tabBarShowLabel: false,
-        tabBarItemStyle: {
-          width: "100%",
-          height: "100%",
-          justifyContent: "center",
-          alignItems: "center",
-        },
-        tabBarStyle: {
-          height: 50,
-          backgroundColor: "white",
-        },
-        tabBarInactiveTintColor: "black",
+        tabBarActiveTintColor: "#131620",
+        tabBarShowLabel: false,
       }}
     >
-      <Tabs.Screen
+      <MaterialTopTabs.Screen
         name="home"
         options={{
           title: "Home",
-          headerShown: false,
           tabBarIcon: ({ focused }) => {
             return (
               <View className="items-center ">
@@ -41,7 +38,7 @@ const _layout = () => {
         }}
       />
 
-      <Tabs.Screen
+      <MaterialTopTabs.Screen
         name="watch"
         options={{
           title: "Watch",
@@ -52,7 +49,7 @@ const _layout = () => {
         }}
       />
 
-      <Tabs.Screen
+      <MaterialTopTabs.Screen
         name="communities"
         options={{
           title: "Communities",
@@ -66,7 +63,7 @@ const _layout = () => {
           ),
         }}
       />
-    </Tabs>
+    </MaterialTopTabs>
   );
 };
 

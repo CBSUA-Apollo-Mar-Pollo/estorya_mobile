@@ -5,3 +5,8 @@ export const useSingleImage = create((set) => ({
   image: {},
   setImageData: (postData, imageData) => set({ postData, image: imageData }),
 }));
+
+export const useHideHeader = create((set) => ({
+  currentRoute: 0,
+  setCurrentRoute: (routeIndex) => set({ currentRoute: routeIndex }),
+}));

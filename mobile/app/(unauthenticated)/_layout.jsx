@@ -1,6 +1,6 @@
 import { Text, TouchableOpacity, View } from "react-native";
 import React, { useEffect } from "react";
-import { withLayoutContext } from "expo-router";
+import { Link, useRouter, withLayoutContext } from "expo-router";
 import { Play, Search } from "lucide-react-native";
 import { Icons } from "../../components/utils/Icons";
 
@@ -17,6 +17,7 @@ const { Navigator } = createMaterialTopTabNavigator();
 export const MaterialTopTabs = withLayoutContext(Navigator);
 
 const _layout = () => {
+  const router = useRouter();
   const currentRoute = useNavigationState((state) => state.routes[state.index]);
   return (
     <View style={{ flex: 1 }}>
@@ -61,6 +62,7 @@ const _layout = () => {
         screenOptions={{
           tabBarActiveTintColor: "#131620",
           tabBarShowLabel: false,
+          lazy: false,
         }}
       >
         <MaterialTopTabs.Screen

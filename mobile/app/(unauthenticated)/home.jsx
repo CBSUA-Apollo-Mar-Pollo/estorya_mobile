@@ -9,8 +9,8 @@ import {
   RefreshControl,
   ActivityIndicator,
 } from "react-native";
-import React, { useEffect, useState } from "react";
-import { useRouter } from "expo-router";
+import React, { useEffect, useMemo, useState } from "react";
+import { Link, useRouter } from "expo-router";
 import {
   ArrowBigDown,
   ArrowBigUp,
@@ -31,6 +31,7 @@ import VideoScreen from "../../components/video-screen";
 import { useQuery } from "@tanstack/react-query";
 import { formatTimeToNow } from "../../lib/utils";
 import MultipleImageRenderer from "../../components/post/multiple-image-renderer";
+import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 
 const HomeScreen = () => {
   const router = useRouter();
@@ -67,6 +68,9 @@ const HomeScreen = () => {
     setRefreshing(false);
   };
 
+  const snapPoints = useMemo(() => ["75%", "100%"], []);
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <View className="bg-neutral-300 h-full">
       {isLoading ? (
@@ -74,106 +78,126 @@ const HomeScreen = () => {
           <ActivityIndicator size={60} color="#000ff" className="mb-20" />
         </View>
       ) : (
-        <ScrollView
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }
-        >
-          <FlatList
-            data={data}
-            ItemSeparatorComponent={() => <View style={{ height: 5 }} />}
-            scrollEnabled={false}
-            renderItem={({ item }) => (
-              <View className="bg-white space-y-2">
-                {/*card header */}
-                <View className="px-4">
-                  <View className="flex-row items-start justify-between ">
-                    <View className="flex-row py-2 gap-x-2">
-                      <Image
-                        source={{ uri: item.author.image }}
-                        className="w-12 h-12 rounded-full mt-0.5"
-                        resizeMode="cover"
-                      />
-                      <View>
-                        <Text className="text-2xl font-extrabold">
-                          {item.author.name}
-                        </Text>
-                        <View className="flex-row items-center justify-start">
-                          <Text className="text-sm">
-                            {formatTimeToNow(new Date(item?.createdAt))}
+        <View>
+          <ScrollView
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+          >
+            <FlatList
+              data={data}
+              ItemSeparatorComponent={() => <View style={{ height: 5 }} />}
+              scrollEnabled={false}
+              renderItem={({ item }) => (
+                <View className="bg-white space-y-2">
+                  {/*card header */}
+                  <View className="px-4">
+                    <View className="flex-row items-start justify-between ">
+                      <View className="flex-row py-2 gap-x-2">
+                        <Image
+                          source={{ uri: item.author.image }}
+                          className="w-12 h-12 rounded-full mt-0.5"
+                          resizeMode="cover"
+                        />
+                        <View>
+                          <Text className="text-2xl font-extrabold">
+                            {item.author.name}
                           </Text>
-                          <Dot color="black" size={15} />
-                          <Globe color="black" size={12} />
+                          <View className="flex-row items-center justify-start">
+                            <Text className="text-sm">
+                              {formatTimeToNow(new Date(item?.createdAt))}
+                            </Text>
+                            <Dot color="black" size={15} />
+                            <Globe color="black" size={12} />
+                          </View>
                         </View>
+                      </View>
+
+                      <View className="flex-row items-center mt-2 gap-x-6">
+                        <TouchableOpacity>
+                          <Ellipsis color="#262626" />
+                        </TouchableOpacity>
+                        <TouchableOpacity>
+                          <X color="#262626" />
+                        </TouchableOpacity>
                       </View>
                     </View>
 
-                    <View className="flex-row items-center mt-2 gap-x-6">
-                      <TouchableOpacity>
-                        <Ellipsis color="#262626" />
-                      </TouchableOpacity>
-                      <TouchableOpacity>
-                        <X color="#262626" />
-                      </TouchableOpacity>
-                    </View>
+                    {/* post caption */}
+                    {item?.description && (
+                      <View className="pb-1 px-1">
+                        <Text className="text-lg">{item.description}</Text>
+                      </View>
+                    )}
                   </View>
 
-                  {/* post caption */}
-                  {item?.description && (
-                    <View className="pb-1 px-1">
-                      <Text className="text-lg">{item.description}</Text>
-                    </View>
-                  )}
-                </View>
+                  {/* if is image */}
+                  {Array.isArray(item?.image) &&
+                    item.image.length > 0 &&
+                    item.image[0]?.url && (
+                      <View className="">
+                        <MultipleImageRenderer
+                          postData={item}
+                          postId={item.id}
+                        />
+                      </View>
+                    )}
 
-                {/* if is image */}
-                {Array.isArray(item?.image) &&
-                  item.image.length > 0 &&
-                  item.image[0]?.url && (
-                    <View className="">
-                      <MultipleImageRenderer postData={item} postId={item.id} />
-                    </View>
-                  )}
+                  {/* if is video */}
+                  {Array.isArray(item?.video) &&
+                    item.video.length > 0 &&
+                    item.video[0]?.url && (
+                      <View className=" ">
+                        <VideoScreen videoSource={item?.video[0]?.url} />
+                      </View>
+                    )}
 
-                {/* if is video */}
-                {Array.isArray(item?.video) &&
-                  item.video.length > 0 &&
-                  item.video[0]?.url && (
-                    <View className=" ">
-                      <VideoScreen videoSource={item?.video[0]?.url} />
+                  {/* footer buttons */}
+                  <View className="flex-row justify-between py-3 px-6">
+                    <View className="flex-row items-center gap-x-2">
+                      <TouchableOpacity>
+                        <ArrowBigUp color="#262626" />
+                      </TouchableOpacity>
+                      <Text className="text-xl text-neutral-800">0</Text>
+                      <TouchableOpacity>
+                        <ArrowBigDown color="#262626" />
+                      </TouchableOpacity>
                     </View>
-                  )}
 
-                {/* footer buttons */}
-                <View className="flex-row justify-between py-3 px-6">
-                  <View className="flex-row items-center gap-x-2">
-                    <TouchableOpacity>
-                      <ArrowBigUp color="#262626" />
+                    <TouchableOpacity
+                      onPress={() => setIsOpen((prev) => !prev)}
+                      className="flex-row items-center gap-x-2"
+                    >
+                      <MessageCircle color="#262626" />
+                      <Text className="text-lg text-neutral-800 font-medium">
+                        Comment
+                      </Text>
                     </TouchableOpacity>
-                    <Text className="text-xl text-neutral-800">0</Text>
-                    <TouchableOpacity>
-                      <ArrowBigDown color="#262626" />
+
+                    <TouchableOpacity className="flex-row items-center gap-x-2">
+                      <Forward color="#262626" />
+                      <Text className="text-lg text-neutral-800 font-medium">
+                        Share
+                      </Text>
                     </TouchableOpacity>
                   </View>
-
-                  <TouchableOpacity className="flex-row items-center gap-x-2">
-                    <MessageCircle color="#262626" />
-                    <Text className="text-lg text-neutral-800 font-medium">
-                      Comment
-                    </Text>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity className="flex-row items-center gap-x-2">
-                    <Forward color="#262626" />
-                    <Text className="text-lg text-neutral-800 font-medium">
-                      Share
-                    </Text>
-                  </TouchableOpacity>
                 </View>
-              </View>
-            )}
-          />
-        </ScrollView>
+              )}
+            />
+          </ScrollView>
+
+          {isOpen && (
+            <BottomSheet
+              index={2}
+              enablePanDownToClose={true}
+              snapPoints={snapPoints}
+            >
+              <BottomSheetView>
+                <Text>Hello</Text>
+              </BottomSheetView>
+            </BottomSheet>
+          )}
+        </View>
       )}
     </View>
   );

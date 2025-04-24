@@ -5,6 +5,7 @@ import { StatusBar } from "expo-status-bar";
 import SafeScreen from "../components/SafeScreen";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 
 export default function RootLayout() {
   const queryClient = new QueryClient();
@@ -13,14 +14,16 @@ export default function RootLayout() {
     <QueryClientProvider client={queryClient}>
       <SafeAreaProvider>
         <GestureHandlerRootView>
-          <SafeScreen>
-            <Stack screenOptions={{ headerShown: false }}>
-              <Stack.Screen name="index" />
-              <Stack.Screen name="(authenticated)" />
-              <Stack.Screen name="(unauthenticated)" />
-              <Stack.Screen name="(auth)" />
-            </Stack>
-          </SafeScreen>
+          <BottomSheetModalProvider>
+            <SafeScreen>
+              <Stack screenOptions={{ headerShown: false }}>
+                <Stack.Screen name="index" />
+                <Stack.Screen name="(authenticated)" />
+                <Stack.Screen name="(unauthenticated)" />
+                <Stack.Screen name="(auth)" />
+              </Stack>
+            </SafeScreen>
+          </BottomSheetModalProvider>
         </GestureHandlerRootView>
         <StatusBar style="dark" />
       </SafeAreaProvider>

@@ -35,7 +35,7 @@ const MultipleImageRenderer = ({ postData, postId }) => {
       )}
 
       {postData.image.length === 2 && (
-        <View className="flex-row">
+        <TouchableOpacity className="flex-row" onPress={() => handleNavigate()}>
           <Image
             source={{ uri: postData.image[0]?.url }}
             style={{
@@ -54,7 +54,7 @@ const MultipleImageRenderer = ({ postData, postId }) => {
               marginLeft: 1.5,
             }}
           />
-        </View>
+        </TouchableOpacity>
       )}
 
       {postData.image.length === 4 && (

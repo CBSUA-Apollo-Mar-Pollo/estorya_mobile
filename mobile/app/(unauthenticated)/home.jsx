@@ -9,7 +9,13 @@ import {
   RefreshControl,
   ActivityIndicator,
 } from "react-native";
-import React, { useEffect, useMemo, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { Link, useRouter } from "expo-router";
 import {
   ArrowBigDown,
@@ -31,11 +37,36 @@ import VideoScreen from "../../components/video-screen";
 import { useQuery } from "@tanstack/react-query";
 import { formatTimeToNow } from "../../lib/utils";
 import MultipleImageRenderer from "../../components/post/multiple-image-renderer";
-import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
+import BottomSheet, {
+  BottomSheetBackdrop,
+  BottomSheetModal,
+  BottomSheetView,
+  useBottomSheetModal,
+} from "@gorhom/bottom-sheet";
+import { StatusBar } from "expo-status-bar";
 
 const HomeScreen = () => {
   const router = useRouter();
   const [refreshing, setRefreshing] = useState(false);
+  const snapPoints = useMemo(() => ["93%"], []);
+  const bottomSheetRef = useRef(null);
+
+  const { dismiss } = useBottomSheetModal();
+
+  const handlePresentModalPress = () => bottomSheetRef.current?.present();
+
+  const renderBackdrop = useCallback(
+    (props) => (
+      <BottomSheetBackdrop
+        {...props}
+        disappearsOnIndex={-1} // hide when closed
+        appearsOnIndex={0} // show when opened
+        opacity={0.5} // darkness level (0 to 1)
+        pressBehavior="close"
+      />
+    ),
+    []
+  );
 
   const fetchData = async () => {
     try {
@@ -67,9 +98,6 @@ const HomeScreen = () => {
     refetch();
     setRefreshing(false);
   };
-
-  const snapPoints = useMemo(() => ["75%", "100%"], []);
-  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <View className="bg-neutral-300 h-full">
@@ -165,7 +193,7 @@ const HomeScreen = () => {
                     </View>
 
                     <TouchableOpacity
-                      onPress={() => setIsOpen((prev) => !prev)}
+                      onPress={handlePresentModalPress}
                       className="flex-row items-center gap-x-2"
                     >
                       <MessageCircle color="#262626" />
@@ -186,17 +214,20 @@ const HomeScreen = () => {
             />
           </ScrollView>
 
-          {isOpen && (
-            <BottomSheet
-              index={2}
-              enablePanDownToClose={true}
-              snapPoints={snapPoints}
-            >
-              <BottomSheetView>
-                <Text>Hello</Text>
-              </BottomSheetView>
-            </BottomSheet>
-          )}
+          {/* Bottom Sheet */}
+
+          <BottomSheetModal
+            ref={bottomSheetRef}
+            index={0}
+            enablePanDownToClose={true}
+            snapPoints={snapPoints}
+            onClose={() => dismiss}
+            backdropComponent={renderBackdrop}
+          >
+            <BottomSheetView className="flex-1">
+              <Text>Hello</Text>
+            </BottomSheetView>
+          </BottomSheetModal>
         </View>
       )}
     </View>

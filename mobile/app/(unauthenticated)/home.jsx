@@ -44,29 +44,17 @@ import BottomSheet, {
   useBottomSheetModal,
 } from "@gorhom/bottom-sheet";
 import { StatusBar } from "expo-status-bar";
+import BottomSheetComments from "../../components/post/bottom-sheet-comments";
 
 const HomeScreen = () => {
   const router = useRouter();
   const [refreshing, setRefreshing] = useState(false);
-  const snapPoints = useMemo(() => ["93%"], []);
+  const [postId, setPostId] = useState(null);
+
   const bottomSheetRef = useRef(null);
 
-  const { dismiss } = useBottomSheetModal();
-
   const handlePresentModalPress = () => bottomSheetRef.current?.present();
-
-  const renderBackdrop = useCallback(
-    (props) => (
-      <BottomSheetBackdrop
-        {...props}
-        disappearsOnIndex={-1} // hide when closed
-        appearsOnIndex={0} // show when opened
-        opacity={0.5} // darkness level (0 to 1)
-        pressBehavior="close"
-      />
-    ),
-    []
-  );
+  console.log(bottomSheetRef.index);
 
   const fetchData = async () => {
     try {
@@ -97,6 +85,11 @@ const HomeScreen = () => {
     setRefreshing(true);
     refetch();
     setRefreshing(false);
+  };
+
+  const handleOpenModal = (id) => {
+    setPostId(id);
+    handlePresentModalPress();
   };
 
   return (
@@ -180,6 +173,15 @@ const HomeScreen = () => {
                       </View>
                     )}
 
+                  {item.comments.length !== 0 && (
+                    <View className="w-full">
+                      <Text className="text-right mr-2 font-semibold text-neutral-800">
+                        {item.comments.length}{" "}
+                        {item.comments.length > 1 ? "comments" : "comment"}
+                      </Text>
+                    </View>
+                  )}
+
                   {/* footer buttons */}
                   <View className="flex-row justify-between py-3 px-6">
                     <View className="flex-row items-center gap-x-2">
@@ -193,7 +195,7 @@ const HomeScreen = () => {
                     </View>
 
                     <TouchableOpacity
-                      onPress={handlePresentModalPress}
+                      onPress={() => handleOpenModal(item.id)}
                       className="flex-row items-center gap-x-2"
                     >
                       <MessageCircle color="#262626" />
@@ -216,18 +218,10 @@ const HomeScreen = () => {
 
           {/* Bottom Sheet */}
 
-          <BottomSheetModal
-            ref={bottomSheetRef}
-            index={0}
-            enablePanDownToClose={true}
-            snapPoints={snapPoints}
-            onClose={() => dismiss}
-            backdropComponent={renderBackdrop}
-          >
-            <BottomSheetView className="flex-1">
-              <Text>Hello</Text>
-            </BottomSheetView>
-          </BottomSheetModal>
+          <BottomSheetComments
+            postId={postId}
+            bottomSheetRef={bottomSheetRef}
+          />
         </View>
       )}
     </View>

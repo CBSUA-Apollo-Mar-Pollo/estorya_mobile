@@ -11,6 +11,7 @@ const SignUpScreen = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [confirmShowPassword, setConfirmShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
   return (
     <View className="bg-white items-center justify-center h-full">
       <Text className="font-bold text-5xl">Sign Up</Text>

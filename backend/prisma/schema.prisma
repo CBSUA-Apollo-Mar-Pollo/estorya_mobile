@@ -51,23 +51,30 @@ model Blog {
 }
 
 model Comment {
-  id                 String            @id
-  text               String?
-  createdAt          DateTime          @default(now())
-  authorId           String
-  postId             String
-  index              String?
-  replyToId          String?
-  commentId          String?
-  commentImageUrl    String?
-  shortsvId          String?
-  userPostedImagesId String?
-  User               User              @relation(fields: [authorId], references: [id])
-  Blog               Blog              @relation(fields: [postId], references: [id])
-  Comment            Comment?          @relation("CommentToComment", fields: [replyToId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  other_Comment      Comment[]         @relation("CommentToComment")
+  id   String  @id @default(cuid())
+  text String?
+
+  createdAt DateTime @default(now())
+
+  author   User   @relation(fields: [authorId], references: [id])
+  authorId String
+
+  blog Blog @relation(fields: [postId], references: [id])
+
+  postId String
+  index  String?
+
+  replyToId String?
+  replyTo   Comment?  @relation("ReplyTo", fields: [replyToId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  replies   Comment[] @relation("ReplyTo")
+
+  commentId       String?
+  commentImageUrl String?
+
   Shortsv            Shortsv?          @relation(fields: [shortsvId], references: [id])
+  shortsvId          String?
   UserPostedImages   UserPostedImages? @relation(fields: [userPostedImagesId], references: [id])
+  userPostedImagesId String?
   CommentVote        CommentVote[]
 }
 

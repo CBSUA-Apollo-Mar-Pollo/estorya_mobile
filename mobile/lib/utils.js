@@ -58,3 +58,26 @@ export function formatTimeToNow(date) {
     return format(date, "MMMM d, yyyy");
   }
 }
+
+export function formatTimeToNowForComments(date) {
+  const now = new Date();
+  const diffInMs = now.getTime() - date.getTime();
+
+  const diffInMinutes = Math.floor(diffInMs / (1000 * 60));
+  const diffInHours = Math.floor(diffInMs / (1000 * 60 * 60));
+  const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+  const diffInWeeks = Math.floor(diffInMs / (1000 * 60 * 60 * 24 * 7));
+  const diffInYears = Math.floor(diffInWeeks / 52);
+
+  if (diffInMinutes < 60) {
+    return `${diffInMinutes}m`;
+  } else if (diffInHours < 24) {
+    return `${diffInHours}h`;
+  } else if (diffInDays < 7) {
+    return `${diffInDays}d`;
+  } else if (diffInWeeks < 52) {
+    return `${diffInWeeks}w`;
+  } else {
+    return `${diffInYears}y`;
+  }
+}

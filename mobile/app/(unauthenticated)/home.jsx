@@ -54,7 +54,6 @@ const HomeScreen = () => {
   const bottomSheetRef = useRef(null);
 
   const handlePresentModalPress = () => bottomSheetRef.current?.present();
-  console.log(bottomSheetRef.index);
 
   const fetchData = async () => {
     try {
@@ -204,7 +203,10 @@ const HomeScreen = () => {
                       </Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity className="flex-row items-center gap-x-2">
+                    <TouchableOpacity
+                      onPress={() => router.push("/signin")}
+                      className="flex-row items-center gap-x-2"
+                    >
                       <Forward color="#262626" />
                       <Text className="text-lg text-neutral-800 font-medium">
                         Share

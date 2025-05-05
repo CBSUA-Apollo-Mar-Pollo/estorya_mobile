@@ -20,6 +20,7 @@ import { ArrowBigDown, ArrowBigUp, ChevronDown } from "lucide-react-native";
 import { formatTimeToNow, formatTimeToNowForComments } from "../../lib/utils";
 
 const BottomSheetComments = ({ postId, bottomSheetRef }) => {
+  const [height, setHeight] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
   const snapPoints = useMemo(() => ["93%"], []);
   const { dismiss } = useBottomSheetModal();
@@ -37,11 +38,18 @@ const BottomSheetComments = ({ postId, bottomSheetRef }) => {
   );
 
   const handleSheetChanges = (index) => {
+    console.log(index);
     if (index === -1) {
       setIsOpen(false); // Bottom sheet is closed
     } else {
       setIsOpen(true); // Bottom sheet is open
     }
+  };
+
+  const handleLayout = (event) => {
+    const rawHeight = event.nativeEvent.layout.height;
+    const roundedHeight = Math.floor(rawHeight); // or Math.floor(), Math.ceil()
+    setHeight(roundedHeight);
   };
 
   const fetchComments = async () => {
@@ -80,15 +88,20 @@ const BottomSheetComments = ({ postId, bottomSheetRef }) => {
       index={0}
       enablePanDownToClose={true}
       snapPoints={snapPoints}
-      onClose={() => dismiss}
+      onClose={() => {
+        dismiss();
+        setIsOpen(false);
+      }}
       backdropComponent={renderBackdrop}
       onChange={handleSheetChanges}
     >
-      {isLoading ? (
+      {isLoading && (
         <View className="flex-col items-center justify-center h-full">
           <ActivityIndicator size={60} color="#000ff" className="mb-20" />
         </View>
-      ) : (
+      )}
+
+      {!isLoading && data?.length !== 0 && (
         <BottomSheetView className="flex-1 px-4">
           <View className="flex-row items-center gap-x-2">
             <Text className="font-semibold">Most relevant</Text>
@@ -101,23 +114,26 @@ const BottomSheetComments = ({ postId, bottomSheetRef }) => {
             ItemSeparatorComponent={() => <View style={{ height: 5 }} />}
             scrollEnabled={false}
             renderItem={({ item }) => (
-              <View className="flex-row items-start gap-x-2 relative">
+              <View
+                onLayout={handleLayout}
+                className="flex-row items-start gap-x-2 relative"
+              >
                 <Image
                   style={{ zIndex: 20 }}
-                  source={{ uri: item.author.image }}
+                  source={{ uri: item?.author.image }}
                   className="w-12 h-12 rounded-full mt-2 bg-white mb-10"
                   resizeMode="cover"
                 />
 
-                <View className="relative">
+                <View className="relative flex-1 flex-wrap">
                   <View
-                    className="mt-2 px-4 pb-3 pt-2"
+                    className="mt-2 px-4 pb-3 pt-2 flex-shrink"
                     style={{ backgroundColor: "#e4eaf0", borderRadius: 14 }}
                   >
                     <Text className="font-semibold text-lg">
-                      {item.author.name}
+                      {item?.author.name}
                     </Text>
-                    <Text>{item.text}</Text>
+                    <Text className="text-base">{item.text}</Text>
                   </View>
 
                   <View className="flex-row items-center gap-x-4 mt-2 relative">
@@ -139,19 +155,98 @@ const BottomSheetComments = ({ postId, bottomSheetRef }) => {
                       </Text>
                     </TouchableOpacity>
                   </View>
-                  <View
-                    style={{
-                      position: "absolute",
-                      left: -30,
-                      top: 54,
-                      zIndex: 10,
-                    }}
-                    className="absolute left-5 h-full  border border-black"
-                  ></View>
+
+                  {/* branch line for replies */}
+                  {item.replies.length !== 0 && (
+                    <View
+                      style={{
+                        position: "absolute",
+                        left: -30,
+                        top: 54,
+                        zIndex: 10,
+                        height: height - 72,
+                        borderLeftWidth: 2.5,
+                      }}
+                      className="absolute left-5  border-neutral-400"
+                    ></View>
+                  )}
+
+                  {item.replies.length !== 0 && (
+                    <View className="relative">
+                      <View
+                        style={{
+                          position: "absolute",
+                          left: -30,
+                          top: -7,
+                          zIndex: 10,
+                          borderLeftWidth: 2.5,
+                          borderTopWidth: 0,
+                          borderRightWidth: 0,
+                          borderBottomWidth: 3,
+                          width: 30,
+                          borderBottomLeftRadius: 15,
+                        }}
+                        className="absolute  h-full border  border-neutral-400"
+                      ></View>
+                      <View
+                        style={{ marginLeft: 10 }}
+                        className="flex-row items-center  gap-x-2 "
+                      >
+                        <Image
+                          style={{ zIndex: 20, height: 26, width: 26 }}
+                          source={{ uri: item?.replies[0]?.author.image }}
+                          className=" rounded-full mt-2  bg-white mb-10"
+                          resizeMode="cover"
+                        />
+                        <Text className="font-semibold ">
+                          {item?.replies[0]?.author?.name}
+                        </Text>
+                        <Text>{item?.replies[0]?.text}</Text>
+                      </View>
+                    </View>
+                  )}
+
+                  {item.replies.length !== 0 && (
+                    <View className="relative">
+                      <View
+                        style={{
+                          position: "absolute",
+                          left: -30,
+                          top: -7,
+                          zIndex: 10,
+                          borderLeftWidth: 2.5,
+                          borderTopWidth: 0,
+                          borderRightWidth: 0,
+                          borderBottomWidth: 3,
+                          width: 30,
+                          borderBottomLeftRadius: 15,
+                        }}
+                        className="absolute  h-full border  border-neutral-400"
+                      ></View>
+                      <View
+                        style={{ marginLeft: 10 }}
+                        className="flex-row items-center  gap-x-2 mt-2"
+                      >
+                        <Text className="font-semibold">
+                          View {item?.replies.length - 1} more replies...
+                        </Text>
+                      </View>
+                    </View>
+                  )}
                 </View>
               </View>
             )}
           />
+
+          {!isLoading && data?.length === 0 && (
+            <View
+              className="flex-col items-center justify-center"
+              style={{ marginTop: 120 }}
+            >
+              <Text className="text-2xl font-bold">No Comments yet</Text>
+              <Text>Be the first comment.</Text>
+            </View>
+          )}
         </BottomSheetView>
       )}
     </BottomSheetModal>

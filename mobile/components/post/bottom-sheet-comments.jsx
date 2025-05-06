@@ -19,9 +19,13 @@ import { PORT } from "../../port";
 import { ArrowBigDown, ArrowBigUp, ChevronDown } from "lucide-react-native";
 import { formatTimeToNow, formatTimeToNowForComments } from "../../lib/utils";
 
-const BottomSheetComments = ({ postId, bottomSheetRef }) => {
+const BottomSheetComments = ({
+  postId,
+  bottomSheetRef,
+  isBottomSheetOpen,
+  setIsBottomSheetOpen,
+}) => {
   const [height, setHeight] = useState(0);
-  const [isOpen, setIsOpen] = useState(false);
   const snapPoints = useMemo(() => ["93%"], []);
   const { dismiss } = useBottomSheetModal();
   const renderBackdrop = useCallback(
@@ -38,11 +42,10 @@ const BottomSheetComments = ({ postId, bottomSheetRef }) => {
   );
 
   const handleSheetChanges = (index) => {
-    console.log(index);
     if (index === -1) {
-      setIsOpen(false); // Bottom sheet is closed
+      setIsBottomSheetOpen(false); // Bottom sheet is closed
     } else {
-      setIsOpen(true); // Bottom sheet is open
+      setIsBottomSheetOpen(true); // Bottom sheet is open
     }
   };
 
@@ -79,7 +82,7 @@ const BottomSheetComments = ({ postId, bottomSheetRef }) => {
   const { data, error, isLoading, refetch } = useQuery({
     queryKey: ["comments", postId],
     queryFn: fetchComments,
-    enabled: isOpen,
+    enabled: isBottomSheetOpen,
   });
 
   return (
@@ -88,10 +91,6 @@ const BottomSheetComments = ({ postId, bottomSheetRef }) => {
       index={0}
       enablePanDownToClose={true}
       snapPoints={snapPoints}
-      onClose={() => {
-        dismiss();
-        setIsOpen(false);
-      }}
       backdropComponent={renderBackdrop}
       onChange={handleSheetChanges}
     >
@@ -237,16 +236,16 @@ const BottomSheetComments = ({ postId, bottomSheetRef }) => {
               </View>
             )}
           />
+        </BottomSheetView>
+      )}
 
-          {!isLoading && data?.length === 0 && (
-            <View
-              className="flex-col items-center justify-center"
-              style={{ marginTop: 120 }}
-            >
-              <Text className="text-2xl font-bold">No Comments yet</Text>
-              <Text>Be the first comment.</Text>
-            </View>
-          )}
+      {!isLoading && data?.length === 0 && (
+        <BottomSheetView
+          className="flex-col items-center h-full"
+          style={{ marginTop: 120 }}
+        >
+          <Text className="text-2xl font-bold">No Comments yet</Text>
+          <Text>Be the first comment.</Text>
         </BottomSheetView>
       )}
     </BottomSheetModal>

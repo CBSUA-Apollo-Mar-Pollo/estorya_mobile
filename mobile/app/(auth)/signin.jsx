@@ -3,6 +3,11 @@ import React, { useState } from "react";
 import { ArrowLeft, Eye, EyeOff, Link } from "lucide-react-native";
 import { images } from "../../constants/images";
 import { useRouter } from "expo-router";
+import {
+  GoogleSignin,
+  GoogleSigninButton,
+  statusCodes,
+} from "@react-native-google-signin/google-signin";
 
 const SignInScreen = () => {
   const router = useRouter();
@@ -10,6 +15,26 @@ const SignInScreen = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
+  GoogleSignin.configure({
+    scopes: ["https://www.googleapis.com/auth/drive.readonly"],
+    webClientId:
+      "515754395613-nontlgh4aqslf1nv9rtfrtteih7ikh6n.apps.googleusercontent.com",
+  });
+
+  const signIn = async () => {
+    try {
+      await GoogleSignin.hasPlayServices();
+      const userInfo = await GoogleSignin.signIn();
+      console.log(JSON.stringify(userInfo, null, 2));
+    } catch (error) {
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+      } else if (error.code === statusCodes.IN_PROGRESS) {
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+      } else {
+      }
+    }
+  };
 
   return (
     <View className="bg-white">
@@ -66,7 +91,10 @@ const SignInScreen = () => {
             <View className="flex-1 h-px bg-gray-300" />
           </View>
 
-          <TouchableOpacity className="w-full border border-neutral-200 bg-white h-14 justify-center items-center rounded-full relative flex-row gap-x-4">
+          <TouchableOpacity
+            onPress={signIn}
+            className="w-full border border-neutral-200 bg-white h-14 justify-center items-center rounded-full relative flex-row gap-x-4"
+          >
             <Image
               source={images.google_logo}
               className="w-6 h-6"

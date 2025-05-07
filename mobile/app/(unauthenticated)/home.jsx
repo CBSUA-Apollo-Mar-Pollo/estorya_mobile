@@ -81,7 +81,6 @@ const HomeScreen = () => {
   const onViewableItemsChanged = useCallback(({ viewableItems, changed }) => {
     // Check if the current video is in view and play it
     const visibleItem = viewableItems.find((item) => item.isViewable);
-    console.log(visibleItem);
     if (visibleItem) {
       // Set the index of the currently visible video to play
       setPlayingVideoIndex(visibleItem.index);

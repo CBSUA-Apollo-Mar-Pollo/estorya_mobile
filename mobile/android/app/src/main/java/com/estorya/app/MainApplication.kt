@@ -1,4 +1,4 @@
-package com.anonymous.mobile
+package com.estorya.app
 
 import android.app.Application
 import android.content.res.Configuration

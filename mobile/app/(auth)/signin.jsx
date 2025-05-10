@@ -8,6 +8,8 @@ import {
   GoogleSigninButton,
   statusCodes,
 } from "@react-native-google-signin/google-signin";
+import axios from "axios";
+import { PORT } from "../../port";
 
 const SignInScreen = () => {
   const router = useRouter();
@@ -26,7 +28,13 @@ const SignInScreen = () => {
     try {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
-      console.log(JSON.stringify(userInfo, null, 2));
+      const response = await axios.post(`${PORT}/api/v1/posts/verifyToken`, {
+        idToken: JSON.stringify(userInfo.data.idToken),
+      });
+
+      console.log(response, "response from axios");
+      // return response.data;
+      // console.log(JSON.stringify(userInfo, null, 2));
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
       } else if (error.code === statusCodes.IN_PROGRESS) {
@@ -91,6 +99,7 @@ const SignInScreen = () => {
             <View className="flex-1 h-px bg-gray-300" />
           </View>
 
+          {/* google sign in */}
           <TouchableOpacity
             onPress={signIn}
             className="w-full border border-neutral-200 bg-white h-14 justify-center items-center rounded-full relative flex-row gap-x-4"

@@ -1,21 +1,21 @@
 import { OAuth2Client } from "google-auth-library";
-const client = new OAuth2Client(
-  "515754395613-nontlgh4aqslf1nv9rtfrtteih7ikh6n.apps.googleusercontent.com"
-);
+const client = new OAuth2Client(process.env.CLIENT_ID);
 
 export const verifyToken = async (req, res) => {
-  const { idToken } = req.body;
+  try {
+    const idToken = JSON.parse(req.body.idToken); // safely converts '"abc"' → 'abc'
 
-  //   console.log(idToken, "idToken from backend");
+    const ticket = await client.verifyIdToken({
+      idToken,
+      audience: process.env.CLIENT_ID, // Must match the client ID from Google Console
+    });
 
-  const ticket = await client.verifyIdToken({
-    idToken,
-    audience:
-      "515754395613-nontlgh4aqslf1nv9rtfrtteih7ikh6n.apps.googleusercontent.com", // Must match the client ID from Google Console
-  });
-  const payload = ticket.getPayload();
+    const payload = ticket.getPayload();
 
-  console.log(payload, "payload from verifying the token");
+    console.log(payload, "payload from verifying the token");
 
-  return idToken; // e.g. payload.email, payload.sub (Google user ID)
+    return idToken; // e.g. payload.email, payload.sub (Google user ID)
+  } catch (error) {
+    console.error(error);
+  }
 };

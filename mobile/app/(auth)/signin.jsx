@@ -20,14 +20,15 @@ const SignInScreen = () => {
 
   GoogleSignin.configure({
     scopes: ["https://www.googleapis.com/auth/drive.readonly"],
-    webClientId:
-      "515754395613-nontlgh4aqslf1nv9rtfrtteih7ikh6n.apps.googleusercontent.com",
+    webClientId: process.env.GOOGLE_CLIENT_ID,
   });
 
   const signIn = async () => {
     try {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
+
+      console.log(userInfo);
       const response = await axios.post(`${PORT}/api/v1/posts/verifyToken`, {
         idToken: JSON.stringify(userInfo.data.idToken),
       });

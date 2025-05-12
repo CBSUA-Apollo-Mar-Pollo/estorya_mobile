@@ -4,6 +4,7 @@ import bodyParser from "body-parser";
 
 import { PORT } from "./config/env.js";
 import postRouter from "./routes/posts.routes.js";
+import authRouter from "./routes/auth.routes.js";
 
 const app = express();
 
@@ -12,6 +13,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.use("/api/v1/posts", postRouter);
+app.use("/api/v1/auth", authRouter);
 
 // set server
 app.listen(PORT, () => {

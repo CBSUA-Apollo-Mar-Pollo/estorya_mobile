@@ -1,8 +1,15 @@
 import { Redirect } from "expo-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import * as Keychain from "react-native-keychain";
+import useKeychainSession from "../hooks/useKeychainSession";
+import { Text } from "react-native";
 
 const Page = () => {
-  const [isSignedIn, setIsSignedIn] = useState(false);
+  const { isSignedIn, loading } = useKeychainSession();
+
+  if (loading) {
+    return <Text>Loading...</Text>;
+  }
 
   if (isSignedIn) return <Redirect href="/(authenticated)/home" />;
 

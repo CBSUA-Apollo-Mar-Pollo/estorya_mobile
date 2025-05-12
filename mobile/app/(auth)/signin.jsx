@@ -1,7 +1,6 @@
 import { View, Text, TextInput, TouchableOpacity, Image } from "react-native";
 import React, { useState } from "react";
 import { ArrowLeft, Eye, EyeOff, Link } from "lucide-react-native";
-import { images } from "../../constants/images";
 import { useRouter } from "expo-router";
 import {
   GoogleSignin,
@@ -9,6 +8,9 @@ import {
   statusCodes,
 } from "@react-native-google-signin/google-signin";
 import axios from "axios";
+import * as Keychain from "react-native-keychain";
+
+import { images } from "../../constants/images";
 import { PORT } from "../../port";
 
 const SignInScreen = () => {
@@ -20,22 +22,30 @@ const SignInScreen = () => {
 
   GoogleSignin.configure({
     scopes: ["https://www.googleapis.com/auth/drive.readonly"],
-    webClientId: process.env.GOOGLE_CLIENT_ID,
+    webClientId: process.env.EXPO_PUBLIC_GOOGLE_CLIENT_ID,
   });
 
   const signIn = async () => {
     try {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
+      const response = await axios.post(
+        `${PORT}/api/v1/auth/verifyToken/google`,
+        {
+          idToken: JSON.stringify(userInfo.data.idToken),
+        }
+      );
+      // Combine token and user into one object
+      const dataToStore = {
+        token: response.data.token,
+        user: response.data.user,
+      };
+      // Serialize the data into a string
+      const dataString = JSON.stringify(dataToStore);
 
-      console.log(userInfo);
-      const response = await axios.post(`${PORT}/api/v1/posts/verifyToken`, {
-        idToken: JSON.stringify(userInfo.data.idToken),
-      });
+      await Keychain.setGenericPassword("authData", dataString); // Store token in the Keychain
 
       console.log(response, "response from axios");
-      // return response.data;
-      // console.log(JSON.stringify(userInfo, null, 2));
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
       } else if (error.code === statusCodes.IN_PROGRESS) {

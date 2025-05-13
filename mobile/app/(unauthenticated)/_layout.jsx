@@ -19,6 +19,7 @@ export const MaterialTopTabs = withLayoutContext(Navigator);
 const _layout = () => {
   const router = useRouter();
   const currentRoute = useNavigationState((state) => state.routes[state.index]);
+
   return (
     <View style={{ flex: 1 }}>
       {/* Custom Header */}

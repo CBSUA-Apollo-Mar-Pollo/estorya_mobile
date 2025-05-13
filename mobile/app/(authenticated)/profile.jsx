@@ -1,12 +1,12 @@
 import { View, Text } from "react-native";
 import React from "react";
 
-const ChatBoxScreen = () => {
+const ProfileScreen = () => {
   return (
     <View>
-      <Text>ChatBoxScreen</Text>
+      <Text>ProfileScreen</Text>
     </View>
   );
 };
 
-export default ChatBoxScreen;
+export default ProfileScreen;

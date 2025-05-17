@@ -87,9 +87,15 @@ const _layout = () => {
           options={{
             title: "Watch",
             headerShown: false,
-            tabBarIcon: ({ focused }) => (
-              <Play color={focused ? "#2563eb" : "black"} size={29} />
-            ),
+            tabBarIcon: ({ focused }) => {
+              if (focused) {
+                return (
+                  <Icons.videoIconFill fill="#2563eb" width={33} height={33} />
+                );
+              } else {
+                return <Icons.videoIcon width={33} height={33} />;
+              }
+            },
           }}
         />
         <MaterialTopTabs.Screen

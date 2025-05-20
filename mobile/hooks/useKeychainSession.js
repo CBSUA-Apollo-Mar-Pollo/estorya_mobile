@@ -19,11 +19,11 @@ const useKeychainSession = () => {
 
         const isExpired = Date.now() >= decoded.exp * 1000;
         if (isExpired) {
-          return router.push("/signin");
+          return router.push("/index");
         } else {
           setSession(data);
           setIsSignedIn(true);
-          console.log("Token and user retrieved from Keychain:", data);
+          // console.log("Token and user retrieved from Keychain:", data);
         }
       } else {
         console.log("No data stored in Keychain");

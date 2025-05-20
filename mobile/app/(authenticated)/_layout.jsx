@@ -70,6 +70,23 @@ const _layout = () => {
           tabBarActiveTintColor: "#131620",
           tabBarShowLabel: false,
           lazy: false,
+          tabBarStyle: {
+            elevation: 0, // Removes the shadow on Android
+            shadowOpacity: 0, // Removes the shadow on iOS
+            borderBottomWidth: 0.8, // Optionally remove bottom border
+            borderBottomColor: "#a8a8a8",
+          },
+          tabBarItemStyle: {
+            paddingBottom: 8, // Remove bottom padding from each tab
+            height: 48, // Optional: reduce tab height
+          },
+          tabBarLabelStyle: {
+            marginBottom: 0, // Removes bottom margin from label
+            fontSize: 14, // Optional: adjust label size
+          },
+          tabBarIconStyle: {
+            marginBottom: 8, // Removes space under the icon (if icons used)
+          },
         }}
       >
         <MaterialTopTabs.Screen

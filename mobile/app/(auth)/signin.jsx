@@ -12,7 +12,6 @@ import * as Keychain from "react-native-keychain";
 
 import { images } from "../../constants/images";
 import { PORT } from "../../port";
-
 const SignInScreen = () => {
   const router = useRouter();
   const [email, setEmail] = useState("");

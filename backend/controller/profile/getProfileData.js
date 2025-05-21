@@ -13,8 +13,6 @@ export const getProfileData = async (req, res) => {
       },
     });
 
-    console.log(user);
-
     const initialPosts = await db.blog.findMany({
       // get all posts by user
       where: {
@@ -67,10 +65,26 @@ export const getProfileData = async (req, res) => {
     });
 
     user.coverPhotoId = getCoverPhoto[0]?.id;
+    delete user.password;
+
+    const friends = await db.friend.findMany({
+      where: {
+        OR: [{ userId: id }, { requesterUserId: id }],
+      },
+      include: {
+        user: true,
+        requesterUser: true,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+      take: 6,
+    });
 
     const data = {
       sortedData,
       user,
+      friends,
     };
 
     res.status(200).json(data);

@@ -1,15 +1,21 @@
-import { View, Text } from "react-native";
+import { View, Text, Pressable, Dimensions } from "react-native";
 import React from "react";
 import useKeychainSession from "../../hooks/useKeychainSession";
 import { useQuery } from "@tanstack/react-query";
 import { Image } from "react-native";
 import axios from "axios";
 import { useState } from "react";
-import { RefreshControl, ScrollView } from "react-native-gesture-handler";
+import {
+  FlatList,
+  RefreshControl,
+  ScrollView,
+} from "react-native-gesture-handler";
 import { PORT } from "../../port";
 import { TouchableOpacity } from "react-native";
 import { Ellipsis, Plus, UserPen } from "lucide-react-native";
 import { Icons } from "../../components/utils/Icons";
+
+const screenWidth = Dimensions.get("window").width;
 
 const ProfileScreen = () => {
   const [refreshing, setRefreshing] = useState(false);
@@ -109,6 +115,91 @@ const ProfileScreen = () => {
               <Ellipsis color="black" size={17} />
             </TouchableOpacity>
           </View>
+        </View>
+      </View>
+
+      <View className="bg-white mt-2">
+        <View className="flex-row mx-3 my-3">
+          <TouchableOpacity className="bg-blue-100 py-2 px-4 rounded-full">
+            <Text className="font-semibold text-blue-800">Posts</Text>
+          </TouchableOpacity>
+          <TouchableOpacity className="py-2 px-4">
+            <Text className="font-semibold text-neutral-700">Photos</Text>
+          </TouchableOpacity>
+          <TouchableOpacity className="py-2 px-4">
+            <Text className="font-semibold text-neutral-700">Videos</Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* line */}
+        <View className="w-full h-[1px] bg-neutral-400" />
+
+        <View className="mx-4 mt-3">
+          <Text className=" font-bold">Details</Text>
+          <Pressable className="flex-row items-center gap-x-2 my-4">
+            <Ellipsis size={27} color="black" />
+            <Text className="">See your About info</Text>
+          </Pressable>
+
+          <TouchableOpacity className="bg-blue-100 py-2 rounded-lg">
+            <Text className="text-blue-700 font-semibold text-center">
+              Edit public details
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+        <View className="mt-4 mx-4">
+          <View className="flex-row items-center justify-between ">
+            <Text className="font-bold">Friends</Text>
+            <TouchableOpacity>
+              <Text className="text-blue-600">Find friends</Text>
+            </TouchableOpacity>
+          </View>
+          <Text className="font-medium text-neutral-600">
+            {data?.friends.length}{" "}
+            {data?.friends.length > 1 ? "friends" : "friend"}
+          </Text>
+
+          <View className="my-2">
+            <FlatList
+              data={data?.friends}
+              scrollEnabled={false}
+              numColumns={3}
+              ItemSeparatorComponent={() => <View style={{ height: 7 }} />}
+              columnWrapperStyle={{
+                gap: 3,
+              }}
+              renderItem={({ item }) => {
+                let friendObj;
+                if (item?.requesterUser.id !== session?.user.id) {
+                  friendObj = item?.requesterUser;
+                } else if (item?.user.id !== session?.user.id) {
+                  friendObj = item?.user;
+                }
+
+                if (friendObj) {
+                  return (
+                    <View style={{ marginHorizontal: 6 }} className="">
+                      <Image
+                        source={{ uri: friendObj.image }}
+                        className="w-32 h-32 rounded-xl"
+                        resizeMode="cover"
+                      />
+                      <Text className="mt-1 ml-1 font-bold">
+                        {friendObj.name}
+                      </Text>
+                    </View>
+                  );
+                }
+                return null;
+              }}
+              keyExtractor={(item, index) => index.toString()}
+            />
+          </View>
+
+          <TouchableOpacity className="bg-gray-300 rounded-md py-2">
+            <Text className="font-bold text-center">See all friends</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </ScrollView>

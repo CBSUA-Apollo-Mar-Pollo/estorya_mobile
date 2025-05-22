@@ -5,6 +5,8 @@ import March7 from "../assets/images/march7.jpg";
 import Heroic from "../assets/images/heroic.png";
 import Boa from "../assets/images/boa.png";
 import Placeholder from "../assets/images/placeholder.png";
+import addPhotoToPost from "../assets/images/addPhotoToPost.png";
+import reel from "../assets/images/reel.png";
 
 export const images = {
   google_logo,
@@ -14,4 +16,6 @@ export const images = {
   Heroic,
   Boa,
   Placeholder,
+  addPhotoToPost,
+  reel,
 };

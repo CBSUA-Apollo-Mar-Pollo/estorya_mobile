@@ -126,7 +126,7 @@ const BottomSheetComments = ({
 
                 <View className="relative flex-1 flex-wrap">
                   <View
-                    className="mt-2 px-4 pb-3 pt-2 flex-shrink"
+                    className="mt-2 px-4 pb-4 pt-2 flex-shrink self-start"
                     style={{ backgroundColor: "#e4eaf0", borderRadius: 14 }}
                   >
                     <Text className="font-semibold text-lg">

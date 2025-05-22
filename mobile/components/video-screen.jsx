@@ -9,6 +9,7 @@ export default function VideoScreen({
   playingVideoIndex,
   setPlayingVideoIndex,
   index,
+  screenFocused,
 }) {
   const [muted, setMuted] = useState(false);
   const [videoEnded, setVideoEnded] = useState(false);
@@ -27,6 +28,8 @@ export default function VideoScreen({
     videoRef.current.seek(0);
   };
 
+  const shouldPlay = screenFocused && playingVideoIndex === index;
+
   return (
     <View style={styles.contentContainer} className="relative w-full">
       <Video
@@ -34,7 +37,7 @@ export default function VideoScreen({
         style={styles.video}
         muted={muted}
         resizeMode="contain"
-        paused={playingVideoIndex !== index}
+        paused={!shouldPlay}
         source={{ uri: videoSource }}
         onEnd={handleVideoEnd}
       />

@@ -32,7 +32,7 @@ const _layout = () => {
           <Text className="text-4xl font-extrabold">Estorya</Text>
           <View className="flex-row gap-x-6 items-center">
             <TouchableOpacity className="bg-black rounded-full">
-              <Plus color="black" size={27} />
+              <Plus color="white" size={27} />
             </TouchableOpacity>
             <TouchableOpacity onPress={() => router.push("/search")}>
               <Search color="black" size={27} />

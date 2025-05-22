@@ -26,6 +26,7 @@ import { formatTimeToNow } from "../../lib/utils";
 import MultipleImageRenderer from "../../components/post/multiple-image-renderer";
 import BottomSheetComments from "../../components/post/bottom-sheet-comments";
 import { FlatList } from "react-native-gesture-handler";
+import { useIsFocused } from "@react-navigation/native";
 
 const HomeScreen = () => {
   const router = useRouter();
@@ -91,6 +92,8 @@ const HomeScreen = () => {
   const viewabilityConfig = {
     itemVisiblePercentThreshold: 50, // Trigger when 50% of the item is visible
   };
+
+  const isFocused = useIsFocused();
 
   return (
     <View className="bg-neutral-300 h-full">
@@ -201,6 +204,7 @@ const HomeScreen = () => {
                         playingVideoIndex={playingVideoIndex}
                         setPlayingVideoIndex={setPlayingVideoIndex}
                         index={index}
+                        screenFocused={isFocused}
                       />
                     </View>
                   )}

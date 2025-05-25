@@ -26,6 +26,7 @@ export const getProfileData = async (req, res) => {
       orderBy: {
         createdAt: "desc",
       },
+      take: 2,
     });
 
     // short video posts

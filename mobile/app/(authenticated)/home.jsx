@@ -1,11 +1,4 @@
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Image,
-  ScrollView,
-  RefreshControl,
-} from "react-native";
+import { View, Text, TouchableOpacity, Image, ScrollView } from "react-native";
 import React, { useCallback, useRef, useState } from "react";
 import { useRouter } from "expo-router";
 import {
@@ -25,21 +18,30 @@ import { useQuery } from "@tanstack/react-query";
 import { formatTimeToNow } from "../../lib/utils";
 import MultipleImageRenderer from "../../components/post/multiple-image-renderer";
 import BottomSheetComments from "../../components/post/bottom-sheet-comments";
-import { FlatList } from "react-native-gesture-handler";
+import { FlatList, RefreshControl } from "react-native-gesture-handler";
 import { useIsFocused } from "@react-navigation/native";
+import useKeychainSession from "../../hooks/useKeychainSession";
+import { images } from "../../constants/images";
+import BottomSheetAddPost from "../../components/post/bottom-sheet-add-post";
 
 const HomeScreen = () => {
   const router = useRouter();
+  const { session } = useKeychainSession();
   const [refreshing, setRefreshing] = useState(false);
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
   const [postId, setPostId] = useState(null);
   const [playingVideoIndex, setPlayingVideoIndex] = useState(null); // To track which video is playing
 
   const bottomSheetRef = useRef(null);
+  const bottomSheetAddPostRef = useRef(null);
 
   const handlePresentModalPress = useCallback(() => {
     bottomSheetRef.current?.present();
   }, []);
+
+  const handleOpenBottomSheetModalAddPost = useCallback(() => {
+    bottomSheetAddPostRef.current?.present();
+  });
 
   const fetchData = async () => {
     try {
@@ -90,13 +92,13 @@ const HomeScreen = () => {
 
   // FlatList's viewability config
   const viewabilityConfig = {
-    itemVisiblePercentThreshold: 50, // Trigger when 50% of the item is visible
+    itemVisiblePercentThreshold: 90, // Trigger when 50% of the item is visible
   };
 
   const isFocused = useIsFocused();
 
   return (
-    <View className="bg-neutral-300 h-full">
+    <View className="bg-neutral-300">
       {isLoading ? (
         <View className="flex-col items-center h-full gap-y-2">
           {/* <ActivityIndicator size={60} color="#000ff" className="mb-20" /> */}
@@ -133,16 +135,38 @@ const HomeScreen = () => {
         </View>
       ) : (
         <View>
-          {/* <ScrollView
-            refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-            }
-          > */}
           <FlatList
             data={data}
-            ItemSeparatorComponent={() => <View style={{ height: 5 }} />}
-            scrollEnabled={true}
+            ListHeaderComponent={() => (
+              // header of post lists
+              <View className="bg-white mb-1 flex-row items-center px-2 py-2">
+                <View className="flex-row items-center flex-1">
+                  <TouchableOpacity>
+                    <Image
+                      source={{ uri: session?.user.image }}
+                      className="w-12 h-12 rounded-full mt-0.5"
+                      resizeMode="cover"
+                    />
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => handleOpenBottomSheetModalAddPost()}
+                    className="border border-gray-400 pl-5 py-1.5 rounded-full flex-1 ml-3 mr-8"
+                  >
+                    <Text>What's on your mind?</Text>
+                  </TouchableOpacity>
+                </View>
+
+                <TouchableOpacity className="mr-4">
+                  <Image
+                    source={images.addPhotoToPost}
+                    className="w-7 h-7"
+                    resizeMode="cover"
+                  />
+                </TouchableOpacity>
+              </View>
+            )}
             renderItem={({ item, index }) => (
+              // posts lists
               <View className="bg-white space-y-2">
                 {/*card header */}
                 <View className="px-4">
@@ -154,7 +178,7 @@ const HomeScreen = () => {
                         resizeMode="cover"
                       />
                       <View>
-                        <Text className="text-2xl font-extrabold">
+                        <Text className="text-lg font-extrabold">
                           {item.author.name}
                         </Text>
                         <View className="flex-row items-center justify-start">
@@ -209,6 +233,17 @@ const HomeScreen = () => {
                     </View>
                   )}
 
+                {/* for rendering shortsv(reels version of the app) */}
+                {item?.videoUrl && (
+                  <VideoScreen
+                    videoSource={item?.videoUrl}
+                    playingVideoIndex={playingVideoIndex}
+                    setPlayingVideoIndex={setPlayingVideoIndex}
+                    index={index}
+                    screenFocused={isFocused}
+                  />
+                )}
+
                 {item.comments.length !== 0 && (
                   <View className="w-full">
                     <Text className="text-right mr-2 font-semibold text-neutral-800">
@@ -252,21 +287,33 @@ const HomeScreen = () => {
                 </View>
               </View>
             )}
+            ItemSeparatorComponent={() => <View style={{ height: 5 }} />}
+            scrollEnabled={true}
             onViewableItemsChanged={onViewableItemsChanged}
             viewabilityConfig={viewabilityConfig}
             refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={onRefresh}
+                progressViewOffset={20}
+              />
             }
           />
-          {/* </ScrollView> */}
 
           {/* Bottom Sheet */}
 
+          {/* for comments */}
           <BottomSheetComments
             postId={postId}
             bottomSheetRef={bottomSheetRef}
             isBottomSheetOpen={isBottomSheetOpen}
             setIsBottomSheetOpen={setIsBottomSheetOpen}
+          />
+
+          {/* for adding post */}
+          <BottomSheetAddPost
+            session={session}
+            bottomSheetAddPostRef={bottomSheetAddPostRef}
           />
         </View>
       )}

@@ -112,7 +112,6 @@ const ProfileScreen = () => {
         data={data?.sortedData}
         renderItem={({ item, index }) => (
           <View className="bg-white space-y-2">
-            {/*card header */}
             <View className="px-4">
               <View className="flex-row items-start justify-between ">
                 <View className="flex-row py-2 gap-x-2">

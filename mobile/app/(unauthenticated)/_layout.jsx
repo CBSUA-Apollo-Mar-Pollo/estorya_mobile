@@ -18,45 +18,26 @@ export const MaterialTopTabs = withLayoutContext(Navigator);
 
 const _layout = () => {
   const router = useRouter();
-  const currentRoute = useNavigationState((state) => state.routes[state.index]);
 
   return (
     <View style={{ flex: 1 }}>
       {/* Custom Header */}
-      {currentRoute.state?.index === 0 && (
-        <Animated.View
-          entering={SlideInUp.duration(200)}
-          exiting={SlideOutUp.duration(200)}
-          className="flex-row items-center justify-between px-4 py-2 bg-white"
-        >
-          <Text className="text-4xl font-extrabold">Estorya</Text>
-          <View className="flex-row gap-x-4 items-center">
-            <TouchableOpacity onPress={() => router.push("/search")}>
-              <Search color="black" size={20} />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => router.push("/signin")}>
-              <Text className="text-xl">Sign in</Text>
-            </TouchableOpacity>
-          </View>
-        </Animated.View>
-      )}
-      {currentRoute.state?.index === undefined && (
-        <Animated.View
-          entering={SlideInUp.duration(200)}
-          exiting={SlideOutUp.duration(200)}
-          className="flex-row items-center justify-between px-4 py-2 bg-white"
-        >
-          <Text className="text-4xl font-extrabold">Estorya</Text>
-          <View className="flex-row gap-x-4 items-center">
-            <TouchableOpacity onPress={() => router.push("/search")}>
-              <Search color="black" size={20} />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => router.push("/signin")}>
-              <Text className="text-xl">Sign in</Text>
-            </TouchableOpacity>
-          </View>
-        </Animated.View>
-      )}
+
+      <Animated.View
+        entering={SlideInUp.duration(200)}
+        exiting={SlideOutUp.duration(200)}
+        className="flex-row items-center justify-between px-4 py-2 bg-white"
+      >
+        <Text className="text-4xl font-extrabold">Estorya</Text>
+        <View className="flex-row gap-x-4 items-center">
+          <TouchableOpacity onPress={() => router.push("/search")}>
+            <Search color="black" size={20} />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => router.push("/signin")}>
+            <Text className="text-xl">Sign in</Text>
+          </TouchableOpacity>
+        </View>
+      </Animated.View>
 
       {/* Tabs */}
       <MaterialTopTabs

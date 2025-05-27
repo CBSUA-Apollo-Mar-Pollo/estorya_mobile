@@ -7,6 +7,18 @@ import Boa from "../assets/images/boa.png";
 import Placeholder from "../assets/images/placeholder.png";
 import addPhotoToPost from "../assets/images/addPhotoToPost.png";
 import reel from "../assets/images/reel.png";
+import memories from "../assets/images/refresh.png";
+import saved from "../assets/images/bookmark.png";
+import community from "../assets/images/groups.png";
+import video from "../assets/images/video.png";
+import searchFriends from "../assets/images/search.png";
+import postFeeds from "../assets/images/feed.png";
+import birthdays from "../assets/images/surprise.png";
+import events from "../assets/images/events.png";
+import pages from "../assets/images/pages.png";
+import messager from "../assets/images/chat.png";
+import helpSupport from "../assets/images/question.png";
+import gradientSettings from "../assets/images/setting.png";
 
 export const images = {
   google_logo,
@@ -18,4 +30,16 @@ export const images = {
   Placeholder,
   addPhotoToPost,
   reel,
+  memories,
+  saved,
+  community,
+  video,
+  searchFriends,
+  postFeeds,
+  birthdays,
+  events,
+  pages,
+  messager,
+  helpSupport,
+  gradientSettings,
 };

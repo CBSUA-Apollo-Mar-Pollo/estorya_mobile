@@ -139,7 +139,7 @@ const HomeScreen = () => {
             data={data}
             ListHeaderComponent={() => (
               // header of post lists
-              <View className="bg-white mb-1 flex-row items-center px-2 py-2">
+              <View className="bg-white mb-1 flex-row items-center px-2 py-3">
                 <View className="flex-row items-center flex-1">
                   <TouchableOpacity>
                     <Image
@@ -152,7 +152,7 @@ const HomeScreen = () => {
                     onPress={() => handleOpenBottomSheetModalAddPost()}
                     className="border border-gray-400 pl-5 py-1.5 rounded-full flex-1 ml-3 mr-8"
                   >
-                    <Text>What's on your mind?</Text>
+                    <Text className="text-lg">What's on your mind?</Text>
                   </TouchableOpacity>
                 </View>
 

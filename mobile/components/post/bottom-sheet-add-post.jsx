@@ -10,6 +10,7 @@ import { ChevronLeft, Plus, Triangle } from "lucide-react-native";
 import { Icons } from "../utils/Icons";
 import { images } from "../../constants/images";
 import { FlatList } from "react-native-gesture-handler";
+import CameraRoll from "@react-native-camera-roll/camera-roll";
 
 const BottomSheetAddPost = ({ session, bottomSheetAddPostRef }) => {
   const snapPoints = useMemo(() => ["100%"], []);
@@ -70,7 +71,7 @@ const BottomSheetAddPost = ({ session, bottomSheetAddPostRef }) => {
               >
                 <ChevronLeft color="black" size={32} />
               </TouchableOpacity>
-              <Text className="text-xl">Create post</Text>
+              <Text className="text-2xl font-medium">Create post</Text>
             </View>
             <TouchableOpacity className="bg-blue-500 p-3 rounded-xl">
               <Text className="text-white font-medium">POST</Text>

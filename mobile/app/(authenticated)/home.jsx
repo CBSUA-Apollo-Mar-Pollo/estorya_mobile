@@ -99,6 +99,9 @@ const HomeScreen = () => {
 
   return (
     <View className="bg-neutral-300">
+      <TouchableOpacity onPress={() => router.push("/example")}>
+        <Text>example</Text>
+      </TouchableOpacity>
       {isLoading ? (
         <View className="flex-col items-center h-full gap-y-2">
           {/* <ActivityIndicator size={60} color="#000ff" className="mb-20" /> */}

@@ -10,9 +10,12 @@ import { ChevronLeft, Plus, Triangle } from "lucide-react-native";
 import { Icons } from "../utils/Icons";
 import { images } from "../../constants/images";
 import { FlatList } from "react-native-gesture-handler";
-import CameraRoll from "@react-native-camera-roll/camera-roll";
 
-const BottomSheetAddPost = ({ session, bottomSheetAddPostRef }) => {
+const BottomSheetAddPost = ({
+  session,
+  bottomSheetAddPostRef,
+  handleOpenBottomSheetModalImagePicker,
+}) => {
   const snapPoints = useMemo(() => ["100%"], []);
   const renderBackdrop = useCallback(
     (props) => (
@@ -20,7 +23,7 @@ const BottomSheetAddPost = ({ session, bottomSheetAddPostRef }) => {
         {...props}
         disappearsOnIndex={-1} // hide when closed
         appearsOnIndex={0} // show when opened
-        opacity={0.5} // darkness level (0 to 1)
+        opacity={1} // darkness level (0 to 1)
         pressBehavior="close"
       />
     ),
@@ -49,6 +52,11 @@ const BottomSheetAddPost = ({ session, bottomSheetAddPostRef }) => {
     { name: "Magenta", hex: "#8C268B" },
     { name: "Deep Magenta", hex: "#821B5F" },
   ];
+
+  const handleOpenImagePicker = () => {
+    handleOpenBottomSheetModalImagePicker();
+    bottomSheetAddPostRef.current?.dismiss();
+  };
 
   return (
     <BottomSheetModal
@@ -174,11 +182,13 @@ const BottomSheetAddPost = ({ session, bottomSheetAddPostRef }) => {
             }}
             className="flex-2 flex-row justify-between  items-center px-10 border-t"
           >
-            <Image
-              source={images.addPhotoToPost}
-              className="w-8 h-8"
-              resizeMode="cover"
-            />
+            <TouchableOpacity onPress={() => handleOpenImagePicker()}>
+              <Image
+                source={images.addPhotoToPost}
+                className="w-8 h-8"
+                resizeMode="cover"
+              />
+            </TouchableOpacity>
             <Image
               source={images.friendTagIcon}
               className="w-9 h-9"

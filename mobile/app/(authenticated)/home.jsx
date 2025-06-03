@@ -23,6 +23,7 @@ import { useIsFocused } from "@react-navigation/native";
 import useKeychainSession from "../../hooks/useKeychainSession";
 import { images } from "../../constants/images";
 import BottomSheetAddPost from "../../components/post/bottom-sheet-add-post";
+import BottomSheetImagePicker from "../../components/post/bottom-sheet-image-picker";
 
 const HomeScreen = () => {
   const router = useRouter();
@@ -34,6 +35,7 @@ const HomeScreen = () => {
 
   const bottomSheetRef = useRef(null);
   const bottomSheetAddPostRef = useRef(null);
+  const bottomSheetImagePickerRef = useRef(null);
 
   const handlePresentModalPress = useCallback(() => {
     bottomSheetRef.current?.present();
@@ -42,6 +44,10 @@ const HomeScreen = () => {
   const handleOpenBottomSheetModalAddPost = useCallback(() => {
     bottomSheetAddPostRef.current?.present();
   });
+
+  const handleOpenBottomSheetModalImagePicker = useCallback(() => {
+    bottomSheetImagePickerRef.current?.present();
+  }, []);
 
   const fetchData = async () => {
     try {
@@ -99,9 +105,6 @@ const HomeScreen = () => {
 
   return (
     <View className="bg-neutral-300">
-      <TouchableOpacity onPress={() => router.push("/example")}>
-        <Text>example</Text>
-      </TouchableOpacity>
       {isLoading ? (
         <View className="flex-col items-center h-full gap-y-2">
           {/* <ActivityIndicator size={60} color="#000ff" className="mb-20" /> */}
@@ -317,6 +320,16 @@ const HomeScreen = () => {
           <BottomSheetAddPost
             session={session}
             bottomSheetAddPostRef={bottomSheetAddPostRef}
+            handleOpenBottomSheetModalImagePicker={
+              handleOpenBottomSheetModalImagePicker
+            }
+          />
+
+          <BottomSheetImagePicker
+            bottomSheetImagePickerRef={bottomSheetImagePickerRef}
+            handleOpenBottomSheetModalAddPost={
+              handleOpenBottomSheetModalAddPost
+            }
           />
         </View>
       )}

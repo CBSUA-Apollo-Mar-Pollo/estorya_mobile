@@ -8,7 +8,7 @@ import {
   PermissionsAndroid,
   Platform,
 } from "react-native";
-import CameraRoll from "@react-native-camera-roll/camera-roll";
+import { CameraRoll } from "@react-native-camera-roll/camera-roll";
 
 export default function CustomImagePicker() {
   const [photos, setPhotos] = useState([]);
@@ -66,7 +66,7 @@ export default function CustomImagePicker() {
     );
   };
 
-  console.log(photos);
+  // console.log(photos);
 
   const renderItem = ({ item }) => {
     const uri = item.node.image.uri;

@@ -22,6 +22,7 @@ import gradientSettings from "../assets/images/setting.png";
 import friendTagIcon from "../assets/images/tag.png";
 import emoteIcon from "../assets/images/smile.png";
 import ellipsisIconPng from "../assets/images/ellipsis.png";
+import blackimageicon from "../assets/images/blackimageicon.png";
 
 export const images = {
   google_logo,
@@ -48,4 +49,5 @@ export const images = {
   friendTagIcon,
   emoteIcon,
   ellipsisIconPng,
+  blackimageicon,
 };

@@ -15,8 +15,7 @@ import { useSingleImage } from "../../hooks/useSingleImage";
 
 const MultipleImageRenderer = ({ postData, postId }) => {
   const router = useRouter();
-  const { setImageData } = useSingleImage();
-
+  const { setImageData } = useSingleImage(); // for adding the image in to global variable
   const handleNavigate = () => {
     router.push(`/post-detail/${postId}`);
   };

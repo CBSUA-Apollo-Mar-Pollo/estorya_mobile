@@ -33,6 +33,8 @@ const HomeScreen = () => {
   const [postId, setPostId] = useState(null);
   const [playingVideoIndex, setPlayingVideoIndex] = useState(null); // To track which video is playing
 
+  const [selectedUris, setSelectedUris] = useState([]); // array state for selected images that will be uploaded.
+
   const bottomSheetRef = useRef(null);
   const bottomSheetAddPostRef = useRef(null);
   const bottomSheetImagePickerRef = useRef(null);
@@ -323,9 +325,13 @@ const HomeScreen = () => {
             handleOpenBottomSheetModalImagePicker={
               handleOpenBottomSheetModalImagePicker
             }
+            selectedUris={selectedUris}
+            setSelectedUris={setSelectedUris}
           />
 
           <BottomSheetImagePicker
+            selectedUris={selectedUris}
+            setSelectedUris={setSelectedUris}
             bottomSheetImagePickerRef={bottomSheetImagePickerRef}
             handleOpenBottomSheetModalAddPost={
               handleOpenBottomSheetModalAddPost

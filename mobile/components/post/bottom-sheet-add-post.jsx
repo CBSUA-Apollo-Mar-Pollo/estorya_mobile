@@ -1,4 +1,11 @@
-import { View, Text, TouchableOpacity, Image, TextInput } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  TextInput,
+  Pressable,
+} from "react-native";
 import { useCallback, useMemo } from "react";
 import {
   BottomSheetBackdrop,
@@ -10,11 +17,14 @@ import { ChevronLeft, Plus, Triangle } from "lucide-react-native";
 import { Icons } from "../utils/Icons";
 import { images } from "../../constants/images";
 import { FlatList } from "react-native-gesture-handler";
+import ImageLayoutAddPost from "./image-layout-addpost";
 
 const BottomSheetAddPost = ({
   session,
   bottomSheetAddPostRef,
   handleOpenBottomSheetModalImagePicker,
+  selectedUris,
+  setSelectedUris,
 }) => {
   const snapPoints = useMemo(() => ["100%"], []);
   const renderBackdrop = useCallback(
@@ -129,50 +139,72 @@ const BottomSheetAddPost = ({
             </View>
           </View>
 
-          <View className="mt-6 flex-1">
-            <TextInput
-              className="px-4 py-2   text-2xl text-black"
-              placeholder="What's on your mind?"
-              keyboardType="default"
-              autoCapitalize="none"
-              multiline
-              textAlignVertical="top"
-            />
+          <View className="mt-6 flex-1 mb-4">
+            <View style={{ height: selectedUris.length > 0 ? 140 : "100%" }}>
+              <TextInput
+                className={`px-4 py-2 ${
+                  selectedUris.length ? "text-sm" : "text-2xl"
+                }  text-black`}
+                placeholder={`${
+                  selectedUris.length > 1
+                    ? "Say Something about these photos..."
+                    : "What's on your mind?"
+                }`}
+                keyboardType="default"
+                autoCapitalize="none"
+                multiline
+                textAlignVertical="top"
+              />
+            </View>
+
+            {selectedUris.length > 0 && (
+              <View className=" flex-1 flex-col items-center">
+                <ImageLayoutAddPost
+                  selectedUris={selectedUris}
+                  setSelectedUris={setSelectedUris}
+                />
+                <Pressable className="bg-gray-300 p-4 rounded-full mt-4">
+                  <Icons.layoutIcon width={20} height={20} color="black" />
+                </Pressable>
+              </View>
+            )}
           </View>
 
           {/* background color choices */}
-          <View className="flex-2 flex-row items-center gap-x-2 mx-2">
-            <TouchableOpacity
-              style={{ borderWidth: 0.2 }}
-              className="mb-2 px-1 py-1.5 rounded-lg "
-            >
-              <ChevronLeft size={30} color="black" />
-            </TouchableOpacity>
-            <FlatList
-              data={backgroundColors}
-              keyExtractor={(item) => item.hex}
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              renderItem={({ item }) => (
-                <View
-                  className="w-12 mr-4 rounded-md justify-center items-center  "
-                  style={{
-                    borderWidth: 0.2,
-                    backgroundColor: item.hex,
-                    height: 38,
-                    marginBottom: 10,
-                    shadowColor: "rgba(0, 0, 0, 1)",
-                    shadowOffset: { width: 1, height: 1 },
-                    shadowOpacity: 0.5,
-                    shadowRadius: 6,
-                    elevation: 2,
-                  }}
-                >
-                  <Text></Text>
-                </View>
-              )}
-            />
-          </View>
+          {selectedUris.length === 0 && (
+            <View className="flex-2 flex-row items-center gap-x-2 mx-2">
+              <TouchableOpacity
+                style={{ borderWidth: 0.2 }}
+                className="mb-2 px-1 py-1.5 rounded-lg "
+              >
+                <ChevronLeft size={30} color="black" />
+              </TouchableOpacity>
+              <FlatList
+                data={backgroundColors}
+                keyExtractor={(item) => item.hex}
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                renderItem={({ item }) => (
+                  <View
+                    className="w-12 mr-4 rounded-md justify-center items-center  "
+                    style={{
+                      borderWidth: 0.2,
+                      backgroundColor: item.hex,
+                      height: 38,
+                      marginBottom: 10,
+                      shadowColor: "rgba(0, 0, 0, 1)",
+                      shadowOffset: { width: 1, height: 1 },
+                      shadowOpacity: 0.5,
+                      shadowRadius: 6,
+                      elevation: 2,
+                    }}
+                  >
+                    <Text></Text>
+                  </View>
+                )}
+              />
+            </View>
+          )}
 
           <View
             style={{

@@ -21,11 +21,13 @@ import { Icons } from "../utils/Icons";
 import { images } from "../../constants/images";
 
 const BottomSheetImagePicker = ({
+  selectedUris,
+  setSelectedUris,
   bottomSheetImagePickerRef,
   handleOpenBottomSheetModalAddPost,
 }) => {
   const [photos, setPhotos] = useState([]);
-  const [selectedUris, setSelectedUris] = useState([]);
+
   const [isSelectMultiple, setIsSelectMultiple] = useState(false);
 
   const snapPoints = useMemo(() => ["100%"], []);
@@ -100,7 +102,7 @@ const BottomSheetImagePicker = ({
 
   //   console.log(photos);
 
-  console.log(selectedUris, "selected URI");
+  // console.log(selectedUris, "selected URI");
 
   const renderItem = ({ item }) => {
     const uri = item.node.image.uri;
@@ -171,6 +173,7 @@ const BottomSheetImagePicker = ({
               </TouchableOpacity>
               {selectedUris.length > 0 ? (
                 <TouchableOpacity
+                  onPress={() => handleCloseImagePicker()}
                   className="py-2 px-3 rounded-lg"
                   style={{ backgroundColor: "#1f44ff" }}
                 >

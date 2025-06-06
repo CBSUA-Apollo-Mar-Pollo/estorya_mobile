@@ -34,6 +34,7 @@ const HomeScreen = () => {
   const [playingVideoIndex, setPlayingVideoIndex] = useState(null); // To track which video is playing
 
   const [selectedUris, setSelectedUris] = useState([]); // array state for selected images that will be uploaded.
+  const [isSelectMultiple, setIsSelectMultiple] = useState(false); // boolean state for toggling selecting multiple images in add post.
 
   const bottomSheetRef = useRef(null);
   const bottomSheetAddPostRef = useRef(null);
@@ -327,6 +328,8 @@ const HomeScreen = () => {
             }
             selectedUris={selectedUris}
             setSelectedUris={setSelectedUris}
+            isSelectMultiple={isSelectMultiple}
+            setIsSelectMultiple={setIsSelectMultiple}
           />
 
           <BottomSheetImagePicker
@@ -336,6 +339,8 @@ const HomeScreen = () => {
             handleOpenBottomSheetModalAddPost={
               handleOpenBottomSheetModalAddPost
             }
+            isSelectMultiple={isSelectMultiple}
+            setIsSelectMultiple={setIsSelectMultiple}
           />
         </View>
       )}

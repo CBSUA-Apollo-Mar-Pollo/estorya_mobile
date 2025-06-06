@@ -25,10 +25,10 @@ const BottomSheetImagePicker = ({
   setSelectedUris,
   bottomSheetImagePickerRef,
   handleOpenBottomSheetModalAddPost,
+  isSelectMultiple,
+  setIsSelectMultiple,
 }) => {
   const [photos, setPhotos] = useState([]);
-
-  const [isSelectMultiple, setIsSelectMultiple] = useState(false);
 
   const snapPoints = useMemo(() => ["100%"], []);
   const renderBackdrop = useCallback(
@@ -95,9 +95,22 @@ const BottomSheetImagePicker = ({
   };
 
   const toggleSelect = (uri) => {
-    setSelectedUris((prev) =>
-      prev.includes(uri) ? prev.filter((item) => item !== uri) : [...prev, uri]
-    );
+    if (isSelectMultiple === false) {
+      // if the select multiple is off when user pick a single picture it will go to add post
+      setSelectedUris((prev) =>
+        prev.includes(uri)
+          ? prev.filter((item) => item !== uri)
+          : [...prev, uri]
+      );
+      bottomSheetImagePickerRef.current?.dismiss();
+      handleOpenBottomSheetModalAddPost();
+    } else {
+      setSelectedUris((prev) =>
+        prev.includes(uri)
+          ? prev.filter((item) => item !== uri)
+          : [...prev, uri]
+      );
+    }
   };
 
   //   console.log(photos);

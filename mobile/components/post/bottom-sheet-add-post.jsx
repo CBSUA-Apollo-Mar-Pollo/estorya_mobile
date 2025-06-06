@@ -16,7 +16,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { ChevronLeft, Plus, Triangle } from "lucide-react-native";
 import { Icons } from "../utils/Icons";
 import { images } from "../../constants/images";
-import { FlatList } from "react-native-gesture-handler";
+import { FlatList, ScrollView } from "react-native-gesture-handler";
 import ImageLayoutAddPost from "./image-layout-addpost";
 
 const BottomSheetAddPost = ({
@@ -25,6 +25,8 @@ const BottomSheetAddPost = ({
   handleOpenBottomSheetModalImagePicker,
   selectedUris,
   setSelectedUris,
+  isSelectMultiple,
+  setIsSelectMultiple,
 }) => {
   const snapPoints = useMemo(() => ["100%"], []);
   const renderBackdrop = useCallback(
@@ -39,6 +41,8 @@ const BottomSheetAddPost = ({
     ),
     []
   );
+
+  console.log(selectedUris);
 
   const backgroundColors = [
     { name: "white", hex: "white" },
@@ -66,6 +70,12 @@ const BottomSheetAddPost = ({
   const handleOpenImagePicker = () => {
     handleOpenBottomSheetModalImagePicker();
     bottomSheetAddPostRef.current?.dismiss();
+  };
+
+  const handleAddMoreImages = () => {
+    handleOpenBottomSheetModalImagePicker();
+    bottomSheetAddPostRef.current?.dismiss();
+    setIsSelectMultiple(true);
   };
 
   return (
@@ -96,79 +106,117 @@ const BottomSheetAddPost = ({
             </TouchableOpacity>
           </View>
 
-          <View className="flex-row items-start gap-x-3 mx-3 mt-2">
-            <Image
-              source={{ uri: session?.user.image }}
-              className="w-12 h-12 rounded-full mt-2"
-              resizeMode="cover"
-            />
-            <View className="flex-col">
-              <Text className="text-xl font-bold">{session?.user.name}</Text>
-              <View className="mt-1 flex-row gap-x-2">
-                <TouchableOpacity
-                  style={{ backgroundColor: "#dbeafe" }}
-                  className="flex-row items-center gap-x-3 p-2 rounded-lg "
-                >
-                  <View className="flex-row items-center gap-x-2">
-                    <Icons.friendsIcon fill="#4268ff" width={15} height={15} />
-                    <Text
-                      style={{ fontWeight: "500" }}
-                      className="text-blue-700"
-                    >
-                      Friends
-                    </Text>
-                  </View>
-                  <Icons.triangleDownIcon fill="#4268ff" width={8} height={8} />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={{ backgroundColor: "#dbeafe" }}
-                  className="flex-row items-center gap-x-3 p-2 rounded-lg "
-                >
-                  <View className="flex-row items-center gap-x-2">
-                    <Plus color="#4268ff" size={15} />
-                    <Text
-                      style={{ fontWeight: "500" }}
-                      className="text-blue-700"
-                    >
-                      Album
-                    </Text>
-                  </View>
-                  <Icons.triangleDownIcon fill="#4268ff" width={8} height={8} />
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
-
-          <View className="mt-6 flex-1 mb-4">
-            <View style={{ height: selectedUris.length > 0 ? 140 : "100%" }}>
-              <TextInput
-                className={`px-4 py-2 ${
-                  selectedUris.length ? "text-sm" : "text-2xl"
-                }  text-black`}
-                placeholder={`${
-                  selectedUris.length > 1
-                    ? "Say Something about these photos..."
-                    : "What's on your mind?"
-                }`}
-                keyboardType="default"
-                autoCapitalize="none"
-                multiline
-                textAlignVertical="top"
+          <ScrollView className="flex-1">
+            <View className="flex-row items-start gap-x-3 mx-3 mt-2">
+              <Image
+                source={{ uri: session?.user.image }}
+                className="w-12 h-12 rounded-full mt-2"
+                resizeMode="cover"
               />
+              <View className="flex-col">
+                <Text className="text-xl font-bold">{session?.user.name}</Text>
+                <View className="mt-1 flex-row gap-x-2">
+                  <TouchableOpacity
+                    style={{ backgroundColor: "#dbeafe" }}
+                    className="flex-row items-center gap-x-3 p-2 rounded-lg "
+                  >
+                    <View className="flex-row items-center gap-x-2">
+                      <Icons.friendsIcon
+                        fill="#4268ff"
+                        width={15}
+                        height={15}
+                      />
+                      <Text
+                        style={{ fontWeight: "500" }}
+                        className="text-blue-700"
+                      >
+                        Friends
+                      </Text>
+                    </View>
+                    <Icons.triangleDownIcon
+                      fill="#4268ff"
+                      width={8}
+                      height={8}
+                    />
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={{ backgroundColor: "#dbeafe" }}
+                    className="flex-row items-center gap-x-3 p-2 rounded-lg "
+                  >
+                    <View className="flex-row items-center gap-x-2">
+                      <Plus color="#4268ff" size={15} />
+                      <Text
+                        style={{ fontWeight: "500" }}
+                        className="text-blue-700"
+                      >
+                        Album
+                      </Text>
+                    </View>
+                    <Icons.triangleDownIcon
+                      fill="#4268ff"
+                      width={8}
+                      height={8}
+                    />
+                  </TouchableOpacity>
+                </View>
+              </View>
             </View>
 
-            {selectedUris.length > 0 && (
-              <View className=" flex-1 flex-col items-center">
-                <ImageLayoutAddPost
-                  selectedUris={selectedUris}
-                  setSelectedUris={setSelectedUris}
+            <View className="mt-6 flex-1 mb-4">
+              <View className="mb-4">
+                <TextInput
+                  className={`px-4 py-2 text-2xl text-black`}
+                  placeholder={`${
+                    selectedUris.length >= 1
+                      ? "Say Something about these photos..."
+                      : "What's on your mind?"
+                  }`}
+                  keyboardType="default"
+                  autoCapitalize="none"
+                  multiline
+                  scrollEnabled={false}
+                  textAlignVertical="top"
                 />
-                <Pressable className="bg-gray-300 p-4 rounded-full mt-4">
-                  <Icons.layoutIcon width={20} height={20} color="black" />
-                </Pressable>
               </View>
-            )}
-          </View>
+
+              {selectedUris.length > 0 && (
+                <View className=" flex-1 flex-col items-center">
+                  <ImageLayoutAddPost
+                    selectedUris={selectedUris}
+                    setSelectedUris={setSelectedUris}
+                  />
+                  {selectedUris.length > 1 && (
+                    <View className="flex-col items-center">
+                      <Pressable className="bg-gray-300 p-4 rounded-full mt-4">
+                        <Icons.layoutIcon
+                          width={20}
+                          height={20}
+                          color="black"
+                        />
+                      </Pressable>
+                      <Text className="text-xl font-bold">Choose layout</Text>
+                    </View>
+                  )}
+
+                  {selectedUris.length === 1 && (
+                    <View className="flex-col items-center">
+                      <TouchableOpacity
+                        onPress={handleAddMoreImages}
+                        className="bg-gray-300 p-2 rounded-full mt-4"
+                      >
+                        <Icons.addMorePhotosIcon
+                          width={30}
+                          height={30}
+                          color="black"
+                        />
+                      </TouchableOpacity>
+                      <Text className="text-xl font-bold">Add more</Text>
+                    </View>
+                  )}
+                </View>
+              )}
+            </View>
+          </ScrollView>
 
           {/* background color choices */}
           {selectedUris.length === 0 && (

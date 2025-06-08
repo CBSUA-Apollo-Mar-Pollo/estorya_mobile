@@ -205,12 +205,12 @@ const BottomSheetAddPost = ({
                         className="bg-gray-300 p-2 rounded-full mt-4"
                       >
                         <Icons.addMorePhotosIcon
-                          width={30}
-                          height={30}
+                          width={35}
+                          height={35}
                           color="black"
                         />
                       </TouchableOpacity>
-                      <Text className="text-xl font-bold">Add more</Text>
+                      <Text className="text-lg font-semibold">Add more</Text>
                     </View>
                   )}
                 </View>

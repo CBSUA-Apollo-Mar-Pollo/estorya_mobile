@@ -6,6 +6,7 @@ import {
   Image,
   PermissionsAndroid,
   Platform,
+  Dimensions,
 } from "react-native";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
@@ -28,8 +29,8 @@ const BottomSheetImagePicker = ({
   isSelectMultiple,
   setIsSelectMultiple,
 }) => {
+  const screenWidth = Dimensions.get("window").width;
   const [photos, setPhotos] = useState([]);
-
   const snapPoints = useMemo(() => ["100%"], []);
   const renderBackdrop = useCallback(
     (props) => (
@@ -118,6 +119,7 @@ const BottomSheetImagePicker = ({
   // console.log(selectedUris, "selected URI");
 
   const renderItem = ({ item }) => {
+    console.log(item);
     const uri = item.node.image.uri;
     const isSelected = selectedUris.includes(uri);
     const index = selectedUris.indexOf(uri);
@@ -145,7 +147,7 @@ const BottomSheetImagePicker = ({
           className="z-0"
           source={{ uri }}
           style={{
-            width: 133,
+            width: screenWidth / 3,
             height: 170,
             margin: 2,
             borderWidth: isSelected ? 4 : 0,
@@ -200,6 +202,7 @@ const BottomSheetImagePicker = ({
             </View>
           </View>
 
+          {/* preview of selected photos */}
           {selectedUris.length > 0 && (
             <FlatList
               data={selectedUris}

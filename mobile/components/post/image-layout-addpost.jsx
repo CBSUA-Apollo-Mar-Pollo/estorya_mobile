@@ -7,7 +7,7 @@ const ImageLayoutAddPost = ({ selectedUris, setSelectedUris }) => {
   useEffect(() => {
     if (selectedUris.length >= 1) {
       Image.getSize(
-        selectedUris[0],
+        selectedUris[0].uri,
         (width, height) => {
           if (width > height) {
             setFirstImageOrientation("landscape");
@@ -32,7 +32,7 @@ const ImageLayoutAddPost = ({ selectedUris, setSelectedUris }) => {
       {/* Layout 1: Single image, dynamic orientation */}
       {selectedUris.length === 1 && (
         <Image
-          source={{ uri: selectedUris[0] }}
+          source={{ uri: selectedUris[0].uri }}
           style={{
             width: screenWidth,
             height:
@@ -48,10 +48,10 @@ const ImageLayoutAddPost = ({ selectedUris, setSelectedUris }) => {
       {/* Layout 2: Two side-by-side images */}
       {selectedUris.length === 2 && (
         <View style={{ flexDirection: "row" }}>
-          {selectedUris.map((uri, index) => (
+          {selectedUris.map((item, index) => (
             <Image
               key={index}
-              source={{ uri }}
+              source={{ uri: item.uri }}
               style={{
                 width: screenWidth / 2 - 1,
                 height: screenWidth,
@@ -73,7 +73,7 @@ const ImageLayoutAddPost = ({ selectedUris, setSelectedUris }) => {
           }}
         >
           <Image
-            source={{ uri: selectedUris[0] }}
+            source={{ uri: selectedUris[0].uri }}
             style={{
               width:
                 firstImageOrientation === "landscape"
@@ -95,7 +95,7 @@ const ImageLayoutAddPost = ({ selectedUris, setSelectedUris }) => {
             }}
           >
             <Image
-              source={{ uri: selectedUris[1] }}
+              source={{ uri: selectedUris[1].uri }}
               style={{
                 width: screenWidth / 2 - 1,
                 height: screenWidth / 2,
@@ -104,7 +104,7 @@ const ImageLayoutAddPost = ({ selectedUris, setSelectedUris }) => {
               }}
             />
             <Image
-              source={{ uri: selectedUris[2] }}
+              source={{ uri: selectedUris[2].uri }}
               style={{
                 width: screenWidth / 2 - 1,
                 height: screenWidth / 2,
@@ -120,10 +120,10 @@ const ImageLayoutAddPost = ({ selectedUris, setSelectedUris }) => {
       {/* Layout 4: 4+ images, 2x2 grid */}
       {selectedUris.length >= 4 && (
         <View style={{ flexWrap: "wrap", flexDirection: "row" }}>
-          {selectedUris.slice(0, 4).map((uri, index) => (
+          {selectedUris.slice(0, 4).map((item, index) => (
             <Image
               key={index}
-              source={{ uri }}
+              source={{ uri: item.uri }}
               style={{
                 width: screenWidth / 2 - 1,
                 height: screenWidth / 2 - 1,

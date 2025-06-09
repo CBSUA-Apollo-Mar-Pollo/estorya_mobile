@@ -95,23 +95,23 @@ const BottomSheetImagePicker = ({
     }
   };
 
-  const toggleSelect = (uri) => {
-    if (isSelectMultiple === false) {
-      // if the select multiple is off when user pick a single picture it will go to add post
-      setSelectedUris((prev) =>
-        prev.includes(uri)
-          ? prev.filter((item) => item !== uri)
-          : [...prev, uri]
-      );
-      bottomSheetImagePickerRef.current?.dismiss();
-      handleOpenBottomSheetModalAddPost();
-    } else {
-      setSelectedUris((prev) =>
-        prev.includes(uri)
-          ? prev.filter((item) => item !== uri)
-          : [...prev, uri]
-      );
-    }
+  const toggleSelect = (imageObject) => {
+    const { uri } = imageObject;
+
+    setSelectedUris((prev) => {
+      const exists = prev.some((item) => item.uri === uri);
+
+      const updated = exists
+        ? prev.filter((item) => item.uri !== uri)
+        : [...prev, imageObject];
+
+      if (isSelectMultiple === false) {
+        bottomSheetImagePickerRef.current?.dismiss();
+        handleOpenBottomSheetModalAddPost();
+      }
+
+      return updated;
+    });
   };
 
   //   console.log(photos);
@@ -119,12 +119,19 @@ const BottomSheetImagePicker = ({
   // console.log(selectedUris, "selected URI");
 
   const renderItem = ({ item }) => {
-    console.log(item);
+    console.log(item.node.type);
+    const imageType = item.node.type;
     const uri = item.node.image.uri;
-    const isSelected = selectedUris.includes(uri);
-    const index = selectedUris.indexOf(uri);
+    const isSelected = selectedUris.some((item) => item.uri === uri);
+    const index = selectedUris.findIndex((item) => item.uri === uri);
+
+    let imageObject = { uri, imageType };
+
     return (
-      <TouchableOpacity className="relative" onPress={() => toggleSelect(uri)}>
+      <TouchableOpacity
+        className="relative"
+        onPress={() => toggleSelect(imageObject)}
+      >
         {isSelectMultiple && (
           <View
             style={{
@@ -250,7 +257,7 @@ const BottomSheetImagePicker = ({
                   </TouchableOpacity>
 
                   <Image
-                    source={{ uri: item }}
+                    source={{ uri: item.uri }}
                     style={{
                       width: 200,
                       height: 550,

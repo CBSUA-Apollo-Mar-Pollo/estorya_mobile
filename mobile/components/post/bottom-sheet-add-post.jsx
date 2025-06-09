@@ -18,6 +18,7 @@ import { Icons } from "../utils/Icons";
 import { images } from "../../constants/images";
 import { FlatList, ScrollView } from "react-native-gesture-handler";
 import ImageLayoutAddPost from "./image-layout-addpost";
+import { uploadToUploadThing } from "../../actions/uploadToUploadthing";
 
 const BottomSheetAddPost = ({
   session,
@@ -42,7 +43,7 @@ const BottomSheetAddPost = ({
     []
   );
 
-  console.log(selectedUris);
+  console.log(selectedUris, "selected URIs");
 
   const backgroundColors = [
     { name: "white", hex: "white" },
@@ -78,6 +79,19 @@ const BottomSheetAddPost = ({
     setIsSelectMultiple(true);
   };
 
+  const handleUpload = async () => {
+    const result = await uploadToUploadThing(
+      selectedUris[0].imageType,
+      selectedUris[0].uri
+    );
+
+    if (result) {
+      console.log("✅ Uploaded:", result);
+    } else {
+      console.log("❌ Upload failed or returned no data");
+    }
+  };
+
   return (
     <BottomSheetModal
       ref={bottomSheetAddPostRef}
@@ -101,7 +115,10 @@ const BottomSheetAddPost = ({
               </TouchableOpacity>
               <Text className="text-2xl font-medium">Create post</Text>
             </View>
-            <TouchableOpacity className="bg-blue-500 p-3 rounded-xl">
+            <TouchableOpacity
+              onPress={() => handleUpload()}
+              className="bg-blue-500 p-3 rounded-xl"
+            >
               <Text className="text-white font-medium">POST</Text>
             </TouchableOpacity>
           </View>

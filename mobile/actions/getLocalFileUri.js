@@ -1,4 +1,5 @@
 import * as FileSystem from "expo-file-system";
+import getFileName from "./getFileName";
 
 export async function getLocalFileUri(contentUri) {
   try {

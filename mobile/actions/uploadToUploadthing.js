@@ -3,15 +3,17 @@ import getFileName from "./getFileName";
 import { getLocalFileUri } from "./getLocalFileUri";
 import * as FileSystem from "expo-file-system";
 
-export async function uploadToUploadThing(type, uri) {
+export async function uploadMultipleToUploadThing(files) {
   try {
     const formData = new FormData();
-    const fileName = getFileName(uri);
 
-    formData.append("file", {
-      uri,
-      name: fileName,
-      type,
+    files.forEach(({ uri, type }) => {
+      const fileName = getFileName(uri);
+      formData.append("file", {
+        uri,
+        name: fileName,
+        type,
+      });
     });
 
     const response = await fetch(`${PORT}/api/upload`, {
@@ -27,8 +29,7 @@ export async function uploadToUploadThing(type, uri) {
       throw new Error(`Backend upload failed: ${text}`);
     }
 
-    const json = await response.json();
-    return json; // { fileUrl, fileKey } from UploadThing via backend
+    return await response.json(); // Array of uploaded file info
   } catch (error) {
     console.error("Upload error:", error);
     throw error;

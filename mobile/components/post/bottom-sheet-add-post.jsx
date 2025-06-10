@@ -80,10 +80,7 @@ const BottomSheetAddPost = ({
   };
 
   const handleUpload = async () => {
-    const result = await uploadToUploadThing(
-      selectedUris[0].imageType,
-      selectedUris[0].uri
-    );
+    const result = await uploadToUploadThing(selectedUris);
 
     if (result) {
       console.log("✅ Uploaded:", result);

@@ -1,3 +1,4 @@
+import axios from "axios";
 import { PORT } from "../port";
 import getFileName from "./getFileName";
 import { getLocalFileUri } from "./getLocalFileUri";
@@ -16,10 +17,9 @@ export async function uploadMultipleToUploadThing(files) {
       });
     });
 
-    const response = await fetch(`${PORT}/api/upload`, {
-      method: "POST",
-      body: formData,
+    const response = await axios.post(`${PORT}/api/upload`, formData, {
       headers: {
+        Accept: "application/json",
         "Content-Type": "multipart/form-data",
       },
     });

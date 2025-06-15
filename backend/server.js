@@ -24,31 +24,32 @@ app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/profile", profileRouter);
 
 // for uploading image in uploadthing
-app.post("/api/upload", upload.single("file"), async (req, res) => {
+app.post("/api/upload", upload.array("file", 5), async (req, res) => {
   try {
-    if (!req.file) {
-      return res.status(400).json({ error: "No file provided" });
+    if (!req.files || req.files.length === 0) {
+      return res.status(400).json({ error: "No files provided" });
     }
 
-    // Read file buffer from temp upload location
-    const fileBuffer = fs.readFileSync(req.file.path);
+    const uploadResponses = [];
 
-    // Create File object (in Node 18+ global, or use 'file-api' polyfill if needed)
-    const file = new File([fileBuffer], req.file.originalname, {
-      type: req.file.mimetype,
-    });
+    for (const fileObj of req.files) {
+      const fileBuffer = fs.readFileSync(fileObj.path);
+      const file = new File([fileBuffer], fileObj.originalname, {
+        type: fileObj.mimetype,
+      });
 
-    // Upload using UTApi
-    const uploadResponse = await utapi.uploadFiles(file);
+      const uploadResponse = await utapi.uploadFiles(file);
 
-    if (uploadResponse.error) {
-      return res.status(500).json({ error: uploadResponse.error });
+      if (uploadResponse.error) {
+        uploadResponses.push({ error: uploadResponse.error });
+      } else {
+        uploadResponses.push(uploadResponse.data);
+      }
+
+      fs.unlinkSync(fileObj.path); // Clean up
     }
 
-    // Clean up the temp file
-    fs.unlinkSync(req.file.path);
-
-    return res.json(uploadResponse.data); // { fileUrl, fileKey, ... }
+    return res.json(uploadResponses); // Array of uploaded file metadata
   } catch (error) {
     console.error("UploadThing server error:", error);
     res.status(500).json({ error: error.message });
@@ -56,7 +57,7 @@ app.post("/api/upload", upload.single("file"), async (req, res) => {
 });
 
 // set server
-app.listen(PORT, () => {
+app.listen(PORT, "0.0.0.0", () => {
   try {
     console.log(`Server listening on ${PORT}`);
   } catch (error) {

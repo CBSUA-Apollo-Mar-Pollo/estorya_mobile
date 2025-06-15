@@ -330,6 +330,7 @@ const HomeScreen = () => {
             setSelectedUris={setSelectedUris}
             isSelectMultiple={isSelectMultiple}
             setIsSelectMultiple={setIsSelectMultiple}
+            refetch={refetch}
           />
 
           <BottomSheetImagePicker

@@ -10,6 +10,7 @@ import { useCallback, useMemo } from "react";
 import {
   BottomSheetBackdrop,
   BottomSheetModal,
+  BottomSheetTextInput,
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -18,7 +19,15 @@ import { Icons } from "../utils/Icons";
 import { images } from "../../constants/images";
 import { FlatList, ScrollView } from "react-native-gesture-handler";
 import ImageLayoutAddPost from "./image-layout-addpost";
-import { uploadToUploadThing } from "../../actions/uploadToUploadthing";
+import {
+  uploadMultipleToUploadThing,
+  uploadToUploadThing,
+} from "../../actions/uploadToUploadthing";
+import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
+import { PORT } from "../../port";
+import { useRouter } from "expo-router";
 
 const BottomSheetAddPost = ({
   session,
@@ -28,7 +37,11 @@ const BottomSheetAddPost = ({
   setSelectedUris,
   isSelectMultiple,
   setIsSelectMultiple,
+  refetch,
 }) => {
+  const [text, setText] = useState("");
+
+  const router = useRouter();
   const snapPoints = useMemo(() => ["100%"], []);
   const renderBackdrop = useCallback(
     (props) => (
@@ -42,8 +55,6 @@ const BottomSheetAddPost = ({
     ),
     []
   );
-
-  console.log(selectedUris, "selected URIs");
 
   const backgroundColors = [
     { name: "white", hex: "white" },
@@ -79,15 +90,42 @@ const BottomSheetAddPost = ({
     setIsSelectMultiple(true);
   };
 
-  const handleUpload = async () => {
-    const result = await uploadToUploadThing(selectedUris);
+  // function for uploading the post
+  const {
+    mutate: handleUpload,
+    isLoading,
+    isError,
+  } = useMutation({
+    mutationFn: async () => {
+      let uploadedImages = [];
 
-    if (result) {
-      console.log("✅ Uploaded:", result);
-    } else {
-      console.log("❌ Upload failed or returned no data");
-    }
-  };
+      if (selectedUris.length >= 1) {
+        const result = await uploadMultipleToUploadThing(selectedUris);
+        uploadedImages = result;
+      }
+
+      const payload = {
+        description: text,
+        images: uploadedImages,
+      };
+
+      const { data } = await axios.post(`${PORT}/api/v1/posts`, payload, {
+        headers: {
+          Authorization: `Bearer ${session.token}`,
+        },
+      });
+      return data;
+    },
+    onError: (err) => {
+      console.log("❌ Upload failed", err);
+    },
+    onSuccess: (data) => {
+      setText("");
+      bottomSheetAddPostRef.current?.dismiss();
+      refetch();
+      console.log("✅ Uploaded:", data);
+    },
+  });
 
   return (
     <BottomSheetModal
@@ -178,7 +216,8 @@ const BottomSheetAddPost = ({
 
             <View className="mt-6 flex-1 mb-4">
               <View className="mb-4">
-                <TextInput
+                <BottomSheetTextInput
+                  onChangeText={setText}
                   className={`px-4 py-2 text-2xl text-black`}
                   placeholder={`${
                     selectedUris.length >= 1

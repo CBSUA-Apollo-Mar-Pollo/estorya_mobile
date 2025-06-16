@@ -26,8 +26,9 @@ app.use("/api/v1/profile", profileRouter);
 // for uploading image in uploadthing
 app.post("/api/upload", upload.array("file", 5), async (req, res) => {
   try {
+    console.log(req.files);
     if (!req.files || req.files.length === 0) {
-      return res.status(400).json({ error: "No files provided" });
+      return res.status(400).json({ message: "No files provided" });
     }
 
     const uploadResponses = [];

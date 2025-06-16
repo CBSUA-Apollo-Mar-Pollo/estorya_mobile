@@ -109,6 +109,8 @@ const BottomSheetAddPost = ({
         images: uploadedImages,
       };
 
+      console.log(payload, "payload from post button");
+
       const { data } = await axios.post(`${PORT}/api/v1/posts`, payload, {
         headers: {
           Authorization: `Bearer ${session.token}`,
@@ -121,6 +123,7 @@ const BottomSheetAddPost = ({
     },
     onSuccess: (data) => {
       setText("");
+      setSelectedUris([]);
       bottomSheetAddPostRef.current?.dismiss();
       refetch();
       console.log("✅ Uploaded:", data);

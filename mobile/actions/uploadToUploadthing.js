@@ -8,30 +8,32 @@ export async function uploadMultipleToUploadThing(files) {
   try {
     const formData = new FormData();
 
-    files.forEach(({ uri, type }) => {
+    console.log(files);
+
+    files.forEach(({ imageType, uri }) => {
       const fileName = getFileName(uri);
       formData.append("file", {
         uri,
         name: fileName,
-        type,
+        type: imageType,
       });
     });
 
+    console.log(formData._parts);
+
     const response = await axios.post(`${PORT}/api/upload`, formData, {
       headers: {
-        Accept: "application/json",
-        "Content-Type": "multipart/form-data",
+        "Content-Type": "multipart/form-data", // ✅ OK with axios (it attaches boundary automatically)
       },
     });
 
-    if (!response.ok) {
-      const text = await response.text();
-      throw new Error(`Backend upload failed: ${text}`);
-    }
-
-    return await response.json(); // Array of uploaded file info
+    return await response.data; // Array of uploaded file info
   } catch (error) {
-    console.error("Upload error:", error);
+    if (axios.isAxiosError(error)) {
+      console.error("Axios Network Error:", error.message);
+    } else {
+      console.error("Unexpected Error:", error);
+    }
     throw error;
   }
 }

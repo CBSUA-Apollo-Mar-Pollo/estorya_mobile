@@ -23,6 +23,13 @@ import friendTagIcon from "../assets/images/tag.png";
 import emoteIcon from "../assets/images/smile.png";
 import ellipsisIconPng from "../assets/images/ellipsis.png";
 import blackimageicon from "../assets/images/blackimageicon.png";
+import bookmarkBlack from "../assets/images/bookmarkBlack.png";
+import box from "../assets/images/box.png";
+import copy from "../assets/images/copy.png";
+import lock from "../assets/images/lock.png";
+import pencil from "../assets/images/pencil.png";
+import settings from "../assets/images/settings.png";
+import trashbin from "../assets/images/trashbin.png";
 
 export const images = {
   google_logo,
@@ -50,4 +57,11 @@ export const images = {
   emoteIcon,
   ellipsisIconPng,
   blackimageicon,
+  bookmarkBlack,
+  box,
+  copy,
+  lock,
+  pencil,
+  settings,
+  trashbin,
 };

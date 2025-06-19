@@ -37,7 +37,7 @@ const BottomSheetAddPost = ({
   setSelectedUris,
   isSelectMultiple,
   setIsSelectMultiple,
-  refetch,
+  onRefresh,
 }) => {
   const [text, setText] = useState("");
 
@@ -125,7 +125,7 @@ const BottomSheetAddPost = ({
       setText("");
       setSelectedUris([]);
       bottomSheetAddPostRef.current?.dismiss();
-      refetch();
+      onRefresh();
       console.log("✅ Uploaded:", data);
     },
   });

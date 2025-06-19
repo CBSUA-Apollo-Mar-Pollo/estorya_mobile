@@ -24,6 +24,7 @@ import useKeychainSession from "../../hooks/useKeychainSession";
 import { images } from "../../constants/images";
 import BottomSheetAddPost from "../../components/post/bottom-sheet-add-post";
 import BottomSheetImagePicker from "../../components/post/bottom-sheet-image-picker";
+import BottomSheetPostSettings from "../../components/post/bottom-sheet-post-settings";
 
 const HomeScreen = () => {
   const router = useRouter();
@@ -39,6 +40,7 @@ const HomeScreen = () => {
   const bottomSheetRef = useRef(null);
   const bottomSheetAddPostRef = useRef(null);
   const bottomSheetImagePickerRef = useRef(null);
+  const bottomSheetPostSettingsRef = useRef(null);
 
   const handlePresentModalPress = useCallback(() => {
     bottomSheetRef.current?.present();
@@ -51,6 +53,10 @@ const HomeScreen = () => {
   const handleOpenBottomSheetModalImagePicker = useCallback(() => {
     bottomSheetImagePickerRef.current?.present();
   }, []);
+
+  const handleOpenBottomSheetPostSettings = useCallback(() => {
+    bottomSheetPostSettingsRef.current?.present();
+  });
 
   const fetchData = async () => {
     try {
@@ -144,6 +150,7 @@ const HomeScreen = () => {
         </View>
       ) : (
         <View>
+          {/* ------------------------ POSTS -------------------------- */}
           <FlatList
             data={data}
             ListHeaderComponent={() => (
@@ -201,7 +208,9 @@ const HomeScreen = () => {
                     </View>
 
                     <View className="flex-row items-center mt-2 gap-x-6">
-                      <TouchableOpacity>
+                      <TouchableOpacity
+                        onPress={() => handleOpenBottomSheetPostSettings()}
+                      >
                         <Ellipsis color="#262626" />
                       </TouchableOpacity>
                       <TouchableOpacity>
@@ -330,7 +339,7 @@ const HomeScreen = () => {
             setSelectedUris={setSelectedUris}
             isSelectMultiple={isSelectMultiple}
             setIsSelectMultiple={setIsSelectMultiple}
-            refetch={refetch}
+            onRefresh={onRefresh}
           />
 
           <BottomSheetImagePicker
@@ -342,6 +351,10 @@ const HomeScreen = () => {
             }
             isSelectMultiple={isSelectMultiple}
             setIsSelectMultiple={setIsSelectMultiple}
+          />
+
+          <BottomSheetPostSettings
+            bottomSheetPostSettingsRef={bottomSheetPostSettingsRef}
           />
         </View>
       )}

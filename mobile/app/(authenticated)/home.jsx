@@ -112,6 +112,11 @@ const HomeScreen = () => {
 
   const isFocused = useIsFocused();
 
+  const handleMovePostToTrash = () => {
+    const filtered = data.filter((item) => item.id !== idToRemove);
+    setData(filtered);
+  };
+
   return (
     <View className="bg-neutral-300">
       {isLoading ? (
@@ -355,6 +360,9 @@ const HomeScreen = () => {
 
           <BottomSheetPostSettings
             bottomSheetPostSettingsRef={bottomSheetPostSettingsRef}
+            handleOpenBottomSheetPostSettings={
+              handleOpenBottomSheetPostSettings
+            }
           />
         </View>
       )}
